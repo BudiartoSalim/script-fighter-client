@@ -9,8 +9,8 @@ class App extends Component {
   state = {
     game: {
       type: Phaser.AUTO,
-      width: 800,
-      height: 600,
+      width: 1600,
+      height: 1600,
       physics: {
         default: 'arcade',
         arcade: {
