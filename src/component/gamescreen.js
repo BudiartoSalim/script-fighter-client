@@ -4,14 +4,32 @@ import { IonPhaser } from '@ion-phaser/react'
 import Preloader from '../scenes/Preloader' 
 import Game from '../scenes/Game' 
 
+/**
+ *     game = {
+      type: Phaser.AUTO,
+      width: 1600,
+      height: 1600,
+      physics: {
+        default: 'arcade',
+        arcade: {
+          gravity: { y: 0 },
+          debug: false
+        }
+      },
+      scene: [Game],
+      scale: {
+        zoom: 2
+      }
+    }
+ */
 
 function GameScreen() {
 
   const [ state, setState ] = useState({
     initialize: true,
     game: {
-      width: '100%',
-      height: '100%',
+      width: 1600,
+      height: 1600,
       type: Phaser.AUTO,
       physics: {
         default: 'arcade',
@@ -19,7 +37,7 @@ function GameScreen() {
           debug: false
         }
     },
-      scene: [Preloader, Game]
+      scene: [Game]
     }
   })
 
