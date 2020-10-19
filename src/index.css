@@ -13,16 +13,20 @@ code {
 }
 
 #background {
-  width: 100vw;
   height: 100vh;
   background-image: url('./assets/dungeon-image.png');
   background-repeat: no-repeat;
   background-size: cover;
+  padding-top: 80px !important;
 }
 
-.width-30 {
-  width: 30% !important;
+.login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
+
+
 
 .mt-60 {
   margin-top: 60%;

@@ -1,5 +1,6 @@
 import React from 'react'
-import {BrowserRouter as Router, Link , Switch , Route} from 'react-router-dom'
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
+
 import Login from './component/login'
 import GameScreen from './component/gamescreen'
 import BattleScene from './scenes/BattleScene'
