@@ -11,3 +11,53 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+#background {
+  height: 100vh;
+  background-image: url('./assets/dungeon-image.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding-top: 80px !important;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+
+.mt-60 {
+  margin-top: 60%;
+}
+
+.center {
+  margin: 0 auto;
+}
+
+.ml-45 {
+  margin-left: 45%;
+}
+
+.title{
+  font-family: 'Staatliches', cursive;
+  width: 100%;
+  text-align: center;
+}
+.red {
+  color: red;
+}
+
+.fs{
+  font-size: 24px;
+}
+
+.bg-white-op-75 {
+  width: 35%;
+  background-color: rgba(255,255,255, 30);
+}
+
+.w-200 {
+  height: 30px;
+}

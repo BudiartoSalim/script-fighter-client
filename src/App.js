@@ -1,18 +1,23 @@
-import React from 'react';
-import { Container } from 'react-bootstrap';
-import OnGame from './components/onGame'
+import React from 'react'
 
-function App() {
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
+import Login from './component/login'
+import GameScreen from './component/gamescreen'
+
+function App () {
 
   return (
-    <div
-    style= {{
-      margin: 'auto',
-      border: '3px solid green',
-    }}>
-      <OnGame/>
-    </div>
-  );
+    <Router>
+      <Switch>
+        <Route exact path="/">
+          <Login/>
+        </Route>
+        <Route exact path="/game">
+          <GameScreen/>
+        </Route>
+      </Switch>
+    </Router>
+  )
 }
 
-export default App;
+export default App
