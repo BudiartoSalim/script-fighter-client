@@ -1,33 +1,23 @@
-import React, { Component } from 'react'
-import Phaser from 'phaser'
-import { IonPhaser } from '@ion-phaser/react'
-import Game from './scenes/Game' 
+import React from 'react'
 
-class App extends Component {
- 
-  
-    game = {
-      type: Phaser.AUTO,
-      width: 1600,
-      height: 1600,
-      physics: {
-        default: 'arcade',
-        arcade: {
-          gravity: { y: 0 },
-          debug: false
-        }
-      },
-      scene: [Game],
-      scale: {
-        zoom: 2
-      }
-    }
- 
-  render() {
-    return (
-      <IonPhaser game={this.game} />
-    )
-  }
+import {BrowserRouter as Router, Link , Switch , Route} from 'react-router-dom'
+import Login from './component/login'
+import GameScreen from './component/gamescreen'
+
+function App () {
+
+  return (
+    <Router>
+      <Switch>
+        <Route exact path="/">
+          <Login/>
+        </Route>
+        <Route exact path="/game">
+          <GameScreen/>
+        </Route>
+      </Switch>
+    </Router>
+  )
 }
- 
-export default App;
+
+export default App

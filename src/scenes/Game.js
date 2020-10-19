@@ -14,16 +14,42 @@ export default class Game extends Phaser.Scene
             direction: 'down',
             monster: {
                 brown: ''
+             }, 
+            username: '',
+            userStatus: {
+                level: 0,
+                hp: 0,
+                atk: 0,
+                def: 0,
+                experience: 0,
+                money: 0,
+                difficulty: 0,
+                reputation: 0
+
             }
         }
         this.preload = preload.bind(this);
 	}    
 
+    preload()
+    {   
+        let my = this.state
+        this.state.username = localStorage.getItem('username')   
+        let stat = JSON.parse(localStorage.getItem('userStatus'))
+        my.userStatus.level = stat.level
+        my.userStatus.hp = stat.hp
+        my.userStatus.atk = stat.atk
+        my.userStatus.def = stat.def
+        my.userStatus.experience = stat.collectedExp
+        my.userStatus.money = stat.money
+        my.userStatus.reputation = stat.reputation
+
+    }
     create()
     {   
         //dungeonTileSet is from dungeon tile set image (PNG)
         //outdoorTileSet is from outdoor tile set image (PNG)
-
+        
         let dungeon = this.make.tilemap({ key: 'dungeon'}) //"dungeon" is from dungeon JSON file that we load
         let outdoor = this.make.tilemap({ key: 'nature-env'})
         
@@ -34,9 +60,9 @@ export default class Game extends Phaser.Scene
         
         dungeon.createStaticLayer('Ground', dungeonTileSet)
         dungeon.createStaticLayer('Dungeon-Properties', dungeonTileSet)
-        outdoor.createStaticLayer('Properties', outdoorTileSet)
         outdoor.createStaticLayer('Ground', outdoorTileSet)
         outdoor.createStaticLayer('More-Grass', outdoorTileSet)
+        outdoor.createStaticLayer('Properties', outdoorTileSet)
 
 
         this.state.monster.brown = this.physics.add.staticSprite(200,200, 'brown-monster', 'moving-object/brown-monster.png' )
@@ -45,7 +71,8 @@ export default class Game extends Phaser.Scene
         this.state.faune = this.physics.add.sprite(100,100, 'faune', 'sprites/walk-down/walk-down-3.png')
         this.state.faune.body.setSize(15,20)
 
-        
+        dungeon.createStaticLayer('Roof', dungeonTileSet)
+
         this.anims.create({
             key:'brown-monster',
             frames: this.anims.generateFrameNumbers('brown-monster', {start: 0, end: 3}),
@@ -56,6 +83,21 @@ export default class Game extends Phaser.Scene
         this.physics.add.collider(this.state.faune, this.state.monster.brown, ()=>{
             console.log("kedebug")
         })
+
+        
+        // Walls
+
+        let wallsLayer = dungeon.createStaticLayer('Walls', dungeonTileSet)
+
+        wallsLayer.setCollisionByProperty({ collides: true }) // From Tiled application
+
+        let debugGraphics = this.add.graphics().setAlpha(0.75)
+
+        // wallsLayer.renderDebug(debugGraphics, {
+        //     tileColor: null,
+        //     collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
+        //     faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
+        //     });
 
         //Moving object properties (Tree, ...., .....)
 
@@ -74,30 +116,9 @@ export default class Game extends Phaser.Scene
         tree.anims.play('tree')
 
 
-        // Walls
-
-        let wallsLayer = dungeon.createStaticLayer('Walls', dungeonTileSet)
-
-        wallsLayer.setCollisionByProperty({ collides: true }) // From Tiled application
-
-        let debugGraphics = this.add.graphics().setAlpha(0.75)
-
-        wallsLayer.renderDebug(debugGraphics, {
-            tileColor: null,
-            collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
-            faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
-            });
-
-            
-        // this.state.monster.brown.renderDebug(debugGraphics, {
-        //     tileColor: null,
-        //     collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
-        //     faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
-        // })
-
-
     //idle position
     this.anims.create({
+
         key:'faune-idle-down', // config for the animation
         frames: [{ key: 'faune', frame: 'sprites/walk-down/walk-down-3.png'}]
     })
@@ -247,4 +268,5 @@ export default class Game extends Phaser.Scene
                 }
 
     }
+
 }
