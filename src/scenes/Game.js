@@ -23,21 +23,16 @@ export default class Game extends Phaser.Scene
 
 	preload()
     {   
-
-        setTimeout(() => {
-            this.state.username = 'character'
-        }, 2000)
-        // console.log(JSON.parse(localStorage.getItem('userstatus')))
-        // this.state.username = localStorage.getItem('username')
-        // this.state.userStatus.level = localStorage.getItem('userstatus')
-        // this.state.userStatus.level = localStorage.getItem('userstatus')
-        // this.state.userStatus.level = localStorage.getItem('userstatus')
-        // this.state.userStatus.level = localStorage.getItem('userstatus')
-        // this.state.userStatus.level = localStorage.getItem('userstatus')
-        // this.state.userStatus.level = localStorage.getItem('userstatus')
-        // this.state.userStatus.level = localStorage.getItem('userstatus')
-        // this.state.userStatus.level = localStorage.getItem('userstatus')
-
+        let my = this.state
+        this.state.username = localStorage.getItem('username')   
+        let stat = JSON.parse(localStorage.getItem('userStatus'))
+        my.userStatus.level = stat.level
+        my.userStatus.hp = stat.hp
+        my.userStatus.atk = stat.atk
+        my.userStatus.def = stat.def
+        my.userStatus.experience = stat.collectedExp
+        my.userStatus.money = stat.money
+        my.userStatus.reputation = stat.reputation
 
         var progress = this.add.graphics();
                 
@@ -65,7 +60,7 @@ export default class Game extends Phaser.Scene
 
     create()
     {
-
+        console.log(this.state)
         let dungeon = this.make.tilemap({ key: 'dungeon'}) //"dungeon" is from dungeon JSON file that we load
         
         let tileset = dungeon.addTilesetImage('dungeon', 'tiles')//  "tiles" is from the IMAGE dungeon tiles  
@@ -226,7 +221,7 @@ export default class Game extends Phaser.Scene
             {
                 this.state.faune.setVelocityX(0);
                 this.state.faune.setVelocityY(0)
-                this.state.faune.anims.play(this.state.faune, true);
+                this.state.faune.anims.play('faune-idle-down', true);
             }
 
     }
