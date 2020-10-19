@@ -1,0 +1,207 @@
+{
+  "frames": {
+    "PNG/animated-tree/tree-top.png": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 798,
+        "h": 73
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 2,
+        "y": 1,
+        "w": 798,
+        "h": 73
+      },
+      "sourceSize": {
+        "w": 800,
+        "h": 74
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "PNG/tiles.png": {
+      "frame": {
+        "x": 798,
+        "y": 0,
+        "w": 464,
+        "h": 256
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 464,
+        "h": 256
+      },
+      "sourceSize": {
+        "w": 464,
+        "h": 256
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "PNG/animated-tiles.png": {
+      "frame": {
+        "x": 1262,
+        "y": 0,
+        "w": 96,
+        "h": 224
+      },
+      "rotated": true,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 224
+      },
+      "sourceSize": {
+        "w": 96,
+        "h": 224
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "PNG/tree.png": {
+      "frame": {
+        "x": 1486,
+        "y": 0,
+        "w": 101,
+        "h": 91
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 4,
+        "y": 5,
+        "w": 101,
+        "h": 91
+      },
+      "sourceSize": {
+        "w": 105,
+        "h": 96
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "PNG/shrub-kill.png": {
+      "frame": {
+        "x": 1587,
+        "y": 0,
+        "w": 91,
+        "h": 21
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 4,
+        "y": 2,
+        "w": 91,
+        "h": 21
+      },
+      "sourceSize": {
+        "w": 120,
+        "h": 24
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "PNG/animated-tree/trunk.png": {
+      "frame": {
+        "x": 1678,
+        "y": 0,
+        "w": 48,
+        "h": 32
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 48,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 48,
+        "h": 32
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "PNG/shrub.png": {
+      "frame": {
+        "x": 1587,
+        "y": 21,
+        "w": 48,
+        "h": 14
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 1,
+        "w": 48,
+        "h": 14
+      },
+      "sourceSize": {
+        "w": 48,
+        "h": 16
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "PNG/switch-step.png": {
+      "frame": {
+        "x": 1635,
+        "y": 21,
+        "w": 14,
+        "h": 29
+      },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 1,
+        "y": 2,
+        "w": 14,
+        "h": 29
+      },
+      "sourceSize": {
+        "w": 16,
+        "h": 32
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    }
+  },
+  "meta": {
+    "app": "http://free-tex-packer.com",
+    "version": "0.6.6",
+    "image": "nature-env.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 1726,
+      "h": 256
+    },
+    "scale": 1
+  }
+}
