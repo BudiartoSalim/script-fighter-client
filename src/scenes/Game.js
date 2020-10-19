@@ -1,79 +1,115 @@
 import Phaser from 'phaser'
 
+import preload from './GamePreload'
+
+
+
 export default class Game extends Phaser.Scene
 {
 	constructor()
 	{
         super('game')
         this.state = {
-            faune: '' //faune is the character's name
+            faune: '', //faune is the character's name.
+            direction: 'down',
+            monster: {
+                brown: ''
+            }
         }
+        this.preload = preload.bind(this);
 	}    
 
-	preload()
-    {
-        this.load.image('tiles', '/tiles/dungeon_tiles.png')
-        this.load.image('outdoor-tiles', '/tiles/nature-env.png')
-        this.load.tilemapTiledJSON('dungeon', '/tiles/dungeon-02.json')
-        this.load.tilemapTiledJSON('nature-env', '/tiles/dungeon-02.json')
-        this.load.atlas('faune', '/character/faune.png', '/character/faune.json')
-        // this.load.spritesheet('character', '/character/converted-faune-walkv2.png', {frameWidth : 24, frameHeight: 32})
-    }
-
     create()
-    {
+    {   
+        //dungeonTileSet is from dungeon tile set image (PNG)
+        //outdoorTileSet is from outdoor tile set image (PNG)
 
         let dungeon = this.make.tilemap({ key: 'dungeon'}) //"dungeon" is from dungeon JSON file that we load
-        
-        let tileset = dungeon.addTilesetImage('dungeon', 'tiles')//  "tiles" is from the IMAGE dungeon tiles  
-        
-        dungeon.createStaticLayer('Ground', tileset)
-        dungeon.createStaticLayer('Dungeon-Properties', tileset)
-        
-
-
- 
-        //////////////
-
         let outdoor = this.make.tilemap({ key: 'nature-env'})
-
-        let tileSet2 = outdoor.addTilesetImage('nature-env', 'outdoor-tiles')
-
-        outdoor.createStaticLayer('Ground', tileSet2)
-        outdoor.createStaticLayer('More-Grass', tileSet2)
-        outdoor.createStaticLayer('Properties', tileSet2)
-
-
-
-        let wallsLayer = dungeon.createStaticLayer('Walls', tileset)
         
-        wallsLayer.setCollisionByProperty({ collides: true })
+
+        let dungeonTileSet = dungeon.addTilesetImage('dungeon', 'tiles')//  "tiles" is from the IMAGE dungeon tiles  
+        let outdoorTileSet = outdoor.addTilesetImage('nature-env', 'outdoor-tiles')
+
         
+        dungeon.createStaticLayer('Ground', dungeonTileSet)
+        dungeon.createStaticLayer('Dungeon-Properties', dungeonTileSet)
+        outdoor.createStaticLayer('Properties', outdoorTileSet)
+        outdoor.createStaticLayer('Ground', outdoorTileSet)
+        outdoor.createStaticLayer('More-Grass', outdoorTileSet)
+
+
+        this.state.monster.brown = this.physics.add.staticSprite(200,200, 'brown-monster', 'moving-object/brown-monster.png' )
+        this.state.monster.brown.body.setSize(10,20)
+
         this.state.faune = this.physics.add.sprite(100,100, 'faune', 'sprites/walk-down/walk-down-3.png')
+        this.state.faune.body.setSize(15,20)
 
-        // let debugGraphics = this.add.graphics().setAlpha(0.75)
-        // wallsLayer.renderDebug(debugGraphics, {
+        
+        this.anims.create({
+            key:'brown-monster',
+            frames: this.anims.generateFrameNumbers('brown-monster', {start: 0, end: 3}),
+            repeat: -1,
+            frameRate: 14
+        })
+
+        this.physics.add.collider(this.state.faune, this.state.monster.brown, ()=>{
+            console.log("kedebug")
+        })
+
+        //Moving object properties (Tree, ...., .....)
+
+        let tree = this.add.sprite(93,614, 'tree')
+
+        this.anims.create({
+            key:'tree',
+            frames: this.anims.generateFrameNumbers('tree', {start: 0, end: 7}),
+            repeat: -1,
+            frameRate: 10
+        })
+
+
+        // Run moving object
+        this.state.monster.brown.anims.play('brown-monster')
+        tree.anims.play('tree')
+
+
+        // Walls
+
+        let wallsLayer = dungeon.createStaticLayer('Walls', dungeonTileSet)
+
+        wallsLayer.setCollisionByProperty({ collides: true }) // From Tiled application
+
+        let debugGraphics = this.add.graphics().setAlpha(0.75)
+
+        wallsLayer.renderDebug(debugGraphics, {
+            tileColor: null,
+            collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
+            faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
+            });
+
+            
+        // this.state.monster.brown.renderDebug(debugGraphics, {
         //     tileColor: null,
         //     collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
         //     faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
-        //     });
+        // })
 
 
-            
-       //idle position
-       this.anims.create({
+    //idle position
+    this.anims.create({
         key:'faune-idle-down', // config for the animation
         frames: [{ key: 'faune', frame: 'sprites/walk-down/walk-down-3.png'}]
     })
 
     this.anims.create({
         key:'faune-idle-up', 
-        frames: [{ key: 'faune', frame: 'sprites/walk-down/walk-up-3.png'}]
+        frames: [{ key: 'faune', frame: 'sprites/walk-up/walk-up-3.png'}]
     })
 
     this.anims.create({
         key:'faune-idle-side',
-        frames: [{ key: 'faune', frame: 'sprites/walk-down/walk-side-3.png'}]
+        frames: [{ key: 'faune', frame: 'sprites/walk-side/walk-side-3.png'}]
     })
 
     //Move position
@@ -132,7 +168,7 @@ export default class Game extends Phaser.Scene
 
     }
 
-    update () 
+    update ()   
     {
         let run = 100
         let walk = 50
@@ -142,50 +178,72 @@ export default class Game extends Phaser.Scene
           this.state.faune.setVelocityY(0);
           this.state.faune.anims.play('faune-run-side', true);
           this.state.faune.scaleX = -1
+          this.state.faune.body.offset.x = 24
+          this.state.direction = 'left'
         } 
         else if (this.state.cursors.left.isDown) {
             this.state.faune.setVelocityX(-walk);
             this.state.faune.setVelocityY(0);
             this.state.faune.anims.play('faune-walk-side', true);
             this.state.faune.scaleX = -1
+            this.state.faune.body.offset.x = 24
+            this.state.direction = 'left'
         } 
         else if (this.state.cursors.right.isDown && this.state.cursors.run.isDown ) {
             this.state.faune.setVelocityX(run);
             this.state.faune.setVelocityY(0);
             this.state.faune.anims.play('faune-run-side', true);
             this.state.faune.scaleX = 1
+            this.state.faune.body.offset.x = 8
+            this.state.direction = 'right'
           } 
           else if (this.state.cursors.right.isDown) {
               this.state.faune.setVelocityX(walk);
               this.state.faune.setVelocityY(0);
               this.state.faune.anims.play('faune-walk-side', true);
               this.state.faune.scaleX = 1
+              this.state.faune.body.offset.x = 8
+              this.state.direction = 'right'
             } 
             else if (this.state.cursors.up.isDown && this.state.cursors.run.isDown ) {
                   this.state.faune.setVelocityY(-run);
                   this.state.faune.setVelocityX(0);
                   this.state.faune.anims.play('faune-run-up', true);
+                  this.state.direction = 'up'
                 } 
                 else if (this.state.cursors.up.isDown)  {
                     this.state.faune.setVelocityY(-walk);
                     this.state.faune.setVelocityX(0);
                     this.state.faune.anims.play('faune-walk-up', true);
+                    this.state.direction = 'up'
                   }
             else if (this.state.cursors.down.isDown && this.state.cursors.run.isDown ) {
                   this.state.faune.setVelocityY(run);
                   this.state.faune.setVelocityX(0);
                   this.state.faune.anims.play('faune-run-down', true);
+                  this.state.direction = 'down'
                 }
                 else if (this.state.cursors.down.isDown) {
                     this.state.faune.setVelocityY(walk);
                     this.state.faune.setVelocityX(0);
                     this.state.faune.anims.play('faune-walk-down', true);
+                    this.state.direction = 'down'
                   }
-            else 
-                {
+            else {
+                if(this.state.direction === 'up' || this.state.direction === 'down') {
+                this.state.faune.anims.play(`faune-idle-${this.state.direction}`, true);
+                } 
+                else {
+                    if(this.state.direction === 'left') {
+                    this.state.faune.anims.play(`faune-idle-side`, true);
+                    this.state.faune.scaleX = -1
+                    }
+                    else {
+                    this.state.faune.anims.play(`faune-idle-side`, true);
+                    }
+                } 
                   this.state.faune.setVelocityX(0);
-                  this.state.faune.setVelocityY(0)
-                  this.state.faune.anims.play(this.state.faune, true);
+                  this.state.faune.setVelocityY(0);
                 }
 
     }
