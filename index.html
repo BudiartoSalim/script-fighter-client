@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.15.1/dist/phaser-arcade-physics.min.js"></script>
+</head>
+<body>
+    <script>
+
+    var config = {
+        type: Phaser.AUTO, 
+        width: 800,
+        height: 600,
+        physics: {
+            default: 'arcade',
+            arcade: {
+                debug: false
+            }
+        },
+        scene: {
+            preload: preload,
+            create: create,
+            update: update
+        }
+    };
+
+    var game = new Phaser.Game(config);
+    var linkedin;
+    var platforms;
+    var logo;
+    var player;
+    var cursors;
+    let check;
+    var hp = 100;
+    var hptext;
+
+    function preload ()
+    {
+        this.load.image('linkedin', 'src/linkedin.png')
+        this.load.image('grass', 'src/grass.jpg')
+        this.load.image('box', 'src/box.png')
+        this.load.image('bomb', 'src/bomb.jpg')
+        this.load.image('linkedin', 'src/linkedin.png')
+        this.load.spritesheet('zelda', 'src/player-walk.png', {frameWidth : 42.33, frameHeight: 45})
+        this.load.spritesheet('narto', 'src/spritechar.png', {frameWidth : 42.33, frameHeight: 45})
+       
+    }
+
+    function create ()
+    {
+        this.add.image(400, 300, 'grass').setScale(3,2);
+        
+        linkedin = this.physics.add.staticGroup()
+
+        platforms = this.physics.add.staticGroup()
+        bomb = this.physics.add.staticGroup({
+            key: 'bomb',
+            repeat: 5,
+            setXY: {x: 100,y: 200, stepX: 80, stepY: 50}
+        })    
+
+        player = this.physics.add.sprite(100,100, 'narto')
+        // player.setBounce(0.2)
+        // player.body.setAllowGravity(false)
+        player.setCollideWorldBounds(true);
+        hptext = this.add.text(16,16, `hp: ${hp}`, {fontSize: '32px', fill: '#000'})
+        
+        linkedin = this.phys
+
+        this.anims.create({
+            key:'left',
+            frames: this.anims.generateFrameNumbers('narto', {start: 9, end: 11}),
+            frameRate: 60
+        })
+
+        this.anims.create({
+            key:'up',
+            frames: this.anims.generateFrameNumbers('narto', {start:0 , end:2}),
+            frameRate: 60
+        })
+
+        this.anims.create({
+            key: 'right',
+            frames: this.anims.generateFrameNumbers('narto', {start: 3, end:5}),
+            frameRate: 60
+        })
+
+        this.anims.create({
+            key: 'down',
+            frames: this.anims.generateFrameNumbers('narto', {start:6 , end:8}),
+            frameRate: 60
+        })
+
+        this.anims.create({
+            key: 'turn',
+            frames: [{key: 'narto', frame: 7}],
+            frameRate: 60
+        })
+        cursors = this.input.keyboard.createCursorKeys();
+
+        this.physics.add.overlap(player, check, pelatform , null, this)
+        this.physics.add.overlap(player, linkedin, linkedIn, null, this)
+        this.physics.add.overlap(player, bomb, damageBomb, null,this)
+    }
+
+    function update () {
+        if (cursors.left.isDown)
+            {
+                player.setVelocityX(-200);
+                player.setVelocityY(0);
+                player.anims.play('left', true);
+            }
+        else if (cursors.right.isDown)
+            {
+                player.setVelocityX(200);
+                player.setVelocityY(0);
+                player.anims.play('right', true);
+            }
+        else if (cursors.up.isDown)
+            {
+                player.setVelocityY(-200);
+                player.setVelocityX(0);
+                player.anims.play('up', true);
+            }
+        else if (cursors.down.isDown)
+            {
+                player.setVelocityY(200);
+                player.setVelocityX(0);
+                player.anims.play('down', true);
+            }
+        else 
+            {
+              player.setVelocityX(0);
+              player.setVelocityY(0)
+              player.anims.play('turn')   
+            }
+    }
+
+    function linkedIn  (player, linkedin)  {
+        linkedin.disableBody(true,true)
+        console.log('linkedin')
+    }
+
+    function pelatform (player, check) {
+        check.disableBody(true,true)
+        console.log('platfrom')
+    }
+    
+    function damageBomb (player, bomb) {
+        bomb.disableBody(true,true)
+        player.setTint(0xff0000);
+        setTimeout(() => {
+            player.clearTint()
+        }, 1000)
+        hp -= 30
+        hptext.setText(`hp: ${hp}`)
+        console.log('kedemeg')
+        player.setTint(0xff0000);
+    }
+
+    </script>
+
+</body>
+</html>

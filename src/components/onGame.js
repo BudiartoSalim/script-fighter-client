@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { IonPhaser } from '@ion-phaser/react'
 import Phaser from 'phaser'
-import { 
+import {
   grass,
   character,
   Bomb
@@ -29,7 +29,7 @@ function OnGame() {
       }
     }
   })
-  
+
   var platforms;
   var logo;
   var player;
@@ -42,7 +42,7 @@ function OnGame() {
 
   function preload ()
     {
-      this.load.image('bomb', Bomb)
+      // this.load.image('bomb', Bomb)
 
         this.load.image('grass', grass)
         this.load.spritesheet('zelda', character, {frameWidth : 24, frameHeight: 32})
@@ -52,13 +52,13 @@ function OnGame() {
   function create ()
   {
       this.add.image(400, 300, 'grass').setScale(3,2);
-      
+
       platforms = this.physics.add.staticGroup()
       bomb = this.physics.add.staticGroup({
           key: 'bomb',
           repeat: 5,
           setXY: {x: 100,y: 200, stepX: 80, stepY: 50}
-      })    
+      })
 
       player = this.physics.add.sprite(100,100, 'zelda')
       // player.setBounce(0.2)
@@ -66,7 +66,7 @@ function OnGame() {
       player.setScale(2)
       player.setCollideWorldBounds(true);
       hptext = this.add.text(16,16, `hp: ${hp}`, {fontSize: '32px', fill: '#000'})
-      
+
       this.anims.create({
           key:'left',
           frames: this.anims.generateFrameNumbers('zelda', {start: 72, end: 96}),
@@ -128,11 +128,11 @@ function OnGame() {
             player.setVelocityX(0);
             player.anims.play('down', true);
         }
-    else 
+    else
         {
           player.setVelocityX(0);
           player.setVelocityY(0)
-          // player.anims.play('turn')   
+          // player.anims.play('turn')
         }
 }
 
@@ -153,7 +153,7 @@ function damageBomb (player, bomb) {
 
   return (
     <div>
-    
+
         <IonPhaser game={game} initialize={initialize} />
 
     </div>
