@@ -16,6 +16,7 @@ function Login () {
       setErrForm('')
     }, 3000)
   }, [errForm])
+  
   function onChangeText(event) {
     let {name , value} = event.target
 
@@ -23,7 +24,6 @@ function Login () {
       ...loginForm, [name] : value
     })
 
-    console.log(loginForm)
   }
 
   function submitted() {
@@ -40,6 +40,17 @@ function Login () {
         localStorage.setItem('userStatus', JSON.stringify(data.UserStatus))
         localStorage.setItem('access_token', data.access_token)
         localStorage.setItem('username', data.username)
+        
+        return axios ({
+          method: 'GET',
+          url: 'http://localhost:3000/monster',
+          headers:{
+            access_token : data.access_token
+          }
+        })
+      })
+      .then(({data}) => {
+        localStorage.setItem('monster', JSON.stringify(data))
         history.push('/game')
       })
       .catch(err => {
@@ -80,7 +91,7 @@ function Login () {
             }
           </div>
           <div className="iconstart">
-            <img alt="" src="./icon/start.png" className="" onClick={submitted}/>
+            <img src="./icon/start.png" onClick={submitted}/>
           </div>
         </div>
       </div>
