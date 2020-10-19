@@ -6,12 +6,55 @@ export default class Game extends Phaser.Scene
 	{
         super('game')
         this.state = {
-            faune: '' //faune is the character's name
+            faune: '', //faune is the character's name
+            username: '',
+            userStatus: {
+                level: 0,
+                hp: 0,
+                atk: 0,
+                def: 0,
+                experience: 0,
+                money: 0,
+                difficulty: 0,
+                reputation: 0
+            }
         }
 	}    
 
 	preload()
-    {
+    {   
+
+        setTimeout(() => {
+            this.state.username = 'character'
+        }, 2000)
+        // console.log(JSON.parse(localStorage.getItem('userstatus')))
+        // this.state.username = localStorage.getItem('username')
+        // this.state.userStatus.level = localStorage.getItem('userstatus')
+        // this.state.userStatus.level = localStorage.getItem('userstatus')
+        // this.state.userStatus.level = localStorage.getItem('userstatus')
+        // this.state.userStatus.level = localStorage.getItem('userstatus')
+        // this.state.userStatus.level = localStorage.getItem('userstatus')
+        // this.state.userStatus.level = localStorage.getItem('userstatus')
+        // this.state.userStatus.level = localStorage.getItem('userstatus')
+        // this.state.userStatus.level = localStorage.getItem('userstatus')
+
+
+        var progress = this.add.graphics();
+                
+        this.load.on('progress', function (value) {
+            console.log('progress kepanggil')
+            progress.clear();
+            progress.fillStyle(0xffffff, 1);
+            progress.fillRect(0, 270, 800 * value, 60);
+            
+        });
+        
+        
+        this.load.on('complete', function () {
+            progress.destroy();
+            
+        });
+
         this.load.image('tiles', '/tiles/dungeon_tiles.png')
         this.load.image('outdoor-tiles', '/tiles/nature-env.png')
         this.load.tilemapTiledJSON('dungeon', '/tiles/dungeon-02.json')
@@ -51,15 +94,13 @@ export default class Game extends Phaser.Scene
         
         this.state.faune = this.physics.add.sprite(100,100, 'faune', 'sprites/walk-down/walk-down-3.png')
 
-        // let debugGraphics = this.add.graphics().setAlpha(0.75)
-        // wallsLayer.renderDebug(debugGraphics, {
-        //     tileColor: null,
-        //     collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
-        //     faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
-        //     });
+        let debugGraphics = this.add.graphics().setAlpha(0.75)
+        wallsLayer.renderDebug(debugGraphics, {
+            tileColor: null,
+            collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
+            faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
+            });
 
-
-            
        //idle position
        this.anims.create({
         key:'faune-idle-down', // config for the animation
@@ -155,38 +196,39 @@ export default class Game extends Phaser.Scene
             this.state.faune.anims.play('faune-run-side', true);
             this.state.faune.scaleX = 1
           } 
-          else if (this.state.cursors.right.isDown) {
-              this.state.faune.setVelocityX(walk);
-              this.state.faune.setVelocityY(0);
-              this.state.faune.anims.play('faune-walk-side', true);
-              this.state.faune.scaleX = 1
+        else if (this.state.cursors.right.isDown) {
+            this.state.faune.setVelocityX(walk);
+            this.state.faune.setVelocityY(0);
+            this.state.faune.anims.play('faune-walk-side', true);
+            this.state.faune.scaleX = 1
+        } 
+        else if (this.state.cursors.up.isDown && this.state.cursors.run.isDown ) {
+                this.state.faune.setVelocityY(-run);
+                this.state.faune.setVelocityX(0);
+                this.state.faune.anims.play('faune-run-up', true);
             } 
-            else if (this.state.cursors.up.isDown && this.state.cursors.run.isDown ) {
-                  this.state.faune.setVelocityY(-run);
-                  this.state.faune.setVelocityX(0);
-                  this.state.faune.anims.play('faune-run-up', true);
-                } 
-                else if (this.state.cursors.up.isDown)  {
-                    this.state.faune.setVelocityY(-walk);
-                    this.state.faune.setVelocityX(0);
-                    this.state.faune.anims.play('faune-walk-up', true);
-                  }
-            else if (this.state.cursors.down.isDown && this.state.cursors.run.isDown ) {
-                  this.state.faune.setVelocityY(run);
-                  this.state.faune.setVelocityX(0);
-                  this.state.faune.anims.play('faune-run-down', true);
-                }
-                else if (this.state.cursors.down.isDown) {
-                    this.state.faune.setVelocityY(walk);
-                    this.state.faune.setVelocityX(0);
-                    this.state.faune.anims.play('faune-walk-down', true);
-                  }
-            else 
-                {
-                  this.state.faune.setVelocityX(0);
-                  this.state.faune.setVelocityY(0)
-                  this.state.faune.anims.play(this.state.faune, true);
-                }
+        else if (this.state.cursors.up.isDown)  {
+            this.state.faune.setVelocityY(-walk);
+            this.state.faune.setVelocityX(0);
+            this.state.faune.anims.play('faune-walk-up', true);
+            }
+        else if (this.state.cursors.down.isDown && this.state.cursors.run.isDown ) {
+                this.state.faune.setVelocityY(run);
+                this.state.faune.setVelocityX(0);
+                this.state.faune.anims.play('faune-run-down', true);
+            }
+        else if (this.state.cursors.down.isDown) {
+            this.state.faune.setVelocityY(walk);
+            this.state.faune.setVelocityX(0);
+            this.state.faune.anims.play('faune-walk-down', true);
+            }
+        else 
+            {
+                this.state.faune.setVelocityX(0);
+                this.state.faune.setVelocityY(0)
+                this.state.faune.anims.play(this.state.faune, true);
+            }
 
     }
+
 }
