@@ -1,8 +1,5 @@
 import Phaser from 'phaser'
-
 import preload from './GamePreload'
-
-
 
 export default class Game extends Phaser.Scene
 {
@@ -14,8 +11,15 @@ export default class Game extends Phaser.Scene
             direction: 'down',
             monster: {
                 brown: ''
-             }, 
+            },
+            listMons: [],
+            question: [],
+            mons: {},
             username: '',
+            lastPosition: {
+                x: 100,
+                y: 100
+            },
             userStatus: {
                 level: 0,
                 hp: 0,
@@ -25,31 +29,18 @@ export default class Game extends Phaser.Scene
                 money: 0,
                 difficulty: 0,
                 reputation: 0
-
-            }
+            },
+            statusBattle: '',
+            statusBattleText : ''
         }
         this.preload = preload.bind(this);
 	}    
 
-    preload()
-    {   
-        let my = this.state
-        this.state.username = localStorage.getItem('username')   
-        let stat = JSON.parse(localStorage.getItem('userStatus'))
-        my.userStatus.level = stat.level
-        my.userStatus.hp = stat.hp
-        my.userStatus.atk = stat.atk
-        my.userStatus.def = stat.def
-        my.userStatus.experience = stat.collectedExp
-        my.userStatus.money = stat.money
-        my.userStatus.reputation = stat.reputation
-
-    }
     create()
     {   
+        
         //dungeonTileSet is from dungeon tile set image (PNG)
         //outdoorTileSet is from outdoor tile set image (PNG)
-        
         let dungeon = this.make.tilemap({ key: 'dungeon'}) //"dungeon" is from dungeon JSON file that we load
         let outdoor = this.make.tilemap({ key: 'nature-env'})
         
@@ -58,21 +49,12 @@ export default class Game extends Phaser.Scene
         let outdoorTileSet = outdoor.addTilesetImage('nature-env', 'outdoor-tiles')
 
         
+
         dungeon.createStaticLayer('Ground', dungeonTileSet)
         dungeon.createStaticLayer('Dungeon-Properties', dungeonTileSet)
         outdoor.createStaticLayer('Ground', outdoorTileSet)
         outdoor.createStaticLayer('More-Grass', outdoorTileSet)
         outdoor.createStaticLayer('Properties', outdoorTileSet)
-
-
-        this.state.monster.brown = this.physics.add.staticSprite(200,200, 'brown-monster', 'moving-object/brown-monster.png' )
-        this.state.monster.brown.body.setSize(10,20)
-
-        this.state.faune = this.physics.add.sprite(100,100, 'faune', 'sprites/walk-down/walk-down-3.png')
-        this.state.faune.body.setSize(15,20)
-
-        dungeon.createStaticLayer('Roof', dungeonTileSet)
-
         this.anims.create({
             key:'brown-monster',
             frames: this.anims.generateFrameNumbers('brown-monster', {start: 0, end: 3}),
@@ -80,16 +62,55 @@ export default class Game extends Phaser.Scene
             frameRate: 14
         })
 
+        
+        this.state.monster.brown = this.physics.add.staticSprite(200,200, 'brown-monster', 'moving-object/brown-monster.png' )
+        this.state.monster.brown.body.setSize(10,20)
+        this.state.monster.brown.aidi = 100
+
+        this.state.faune = this.physics.add.sprite(this.state.lastPosition.x,this.state.lastPosition.y, 'faune', 'sprites/walk-down/walk-down-3.png')
+        this.state.faune.body.setSize(15,20)
+
+        // Looping monster as much as question length
+        for(let i = 0 ; i < this.state.question.length ; i++){
+            let x = Math.floor(Math.random() * 500)
+            let y = Math.floor(Math.random() * 500)
+            let randMonster = Math.floor(Math.random() * this.state.listMons.length)
+            this.state.mons[this.state.listMons[randMonster].id] = this.physics.add.staticSprite(x , y , 'brown-monster', 'moving-object/brown-monster.png') 
+            
+            this.state.mons[this.state.listMons[randMonster].id].anims.play('brown-monster')
+            this.state.mons[this.state.listMons[randMonster].id].id = this.state.listMons[randMonster].id
+            this.state.mons[this.state.listMons[randMonster].id].body.setSize(10,20)
+            
+            // adding collider to monster created by looping
+            this.physics.add.collider(this.state.faune, this.state.mons[this.state.listMons[randMonster].id], () => {
+                localStorage.setItem('question-now', JSON.stringify(this.state.question[i]))
+                localStorage.setItem('monster-now', JSON.stringify(this.state.listMons[randMonster]))
+                localStorage.setItem('x', this.state.faune.body.center.x - 10)
+                localStorage.setItem('y', this.state.faune.body.center.y)
+
+                window.location.href = '/battle'
+                this.state.mons[this.state.listMons[randMonster].id].disableBody(true,true)
+            })
+        }
+        
+        dungeon.createStaticLayer('Roof', dungeonTileSet)
+
         this.physics.add.collider(this.state.faune, this.state.monster.brown, ()=>{
             console.log("kedebug")
+            console.log(this.state.monster.brown.aidi)
+            // window.location.href= `/monster/${this.state.monster.brown.aidi}`
         })
 
-        
         // Walls
-
+        
         let wallsLayer = dungeon.createStaticLayer('Walls', dungeonTileSet)
-
+        
         wallsLayer.setCollisionByProperty({ collides: true }) // From Tiled application
+        
+        this.add.text(0,0 , `level : ${this.state.userStatus.level}`)
+        if(this.state.statusBattle) {
+            this.state.statusBattleText = this.add.text(this.state.lastPosition.x - 35 ,this.state.lastPosition.y - 30, `You ${this.state.statusBattle}`)
+        }
 
         let debugGraphics = this.add.graphics().setAlpha(0.75)
 
@@ -184,13 +205,20 @@ export default class Game extends Phaser.Scene
             down:Phaser.Input.Keyboard.KeyCodes.S,
             left:Phaser.Input.Keyboard.KeyCodes.A,
             right:Phaser.Input.Keyboard.KeyCodes.D,
-            run: Phaser.Input.Keyboard.KeyCodes.SHIFT
+            run: Phaser.Input.Keyboard.KeyCodes.SHIFT,
+            enter: Phaser.Input.Keyboard.KeyCodes.ENTER
         })
 
     }
 
     update ()   
     {
+        //destroy text
+        if(this.state.statusBattleText) {
+            setTimeout(() => {
+                this.state.statusBattleText.destroy()
+            }, 1000)
+        }
         let run = 100
         let walk = 50
 
@@ -217,55 +245,58 @@ export default class Game extends Phaser.Scene
             this.state.faune.scaleX = 1
             this.state.faune.body.offset.x = 8
             this.state.direction = 'right'
-          } 
-          else if (this.state.cursors.right.isDown) {
-              this.state.faune.setVelocityX(walk);
-              this.state.faune.setVelocityY(0);
-              this.state.faune.anims.play('faune-walk-side', true);
-              this.state.faune.scaleX = 1
-              this.state.faune.body.offset.x = 8
-              this.state.direction = 'right'
-            } 
-            else if (this.state.cursors.up.isDown && this.state.cursors.run.isDown ) {
-                  this.state.faune.setVelocityY(-run);
-                  this.state.faune.setVelocityX(0);
-                  this.state.faune.anims.play('faune-run-up', true);
-                  this.state.direction = 'up'
-                } 
-                else if (this.state.cursors.up.isDown)  {
-                    this.state.faune.setVelocityY(-walk);
-                    this.state.faune.setVelocityX(0);
-                    this.state.faune.anims.play('faune-walk-up', true);
-                    this.state.direction = 'up'
-                  }
-            else if (this.state.cursors.down.isDown && this.state.cursors.run.isDown ) {
-                  this.state.faune.setVelocityY(run);
-                  this.state.faune.setVelocityX(0);
-                  this.state.faune.anims.play('faune-run-down', true);
-                  this.state.direction = 'down'
-                }
-                else if (this.state.cursors.down.isDown) {
-                    this.state.faune.setVelocityY(walk);
-                    this.state.faune.setVelocityX(0);
-                    this.state.faune.anims.play('faune-walk-down', true);
-                    this.state.direction = 'down'
-                  }
-            else {
-                if(this.state.direction === 'up' || this.state.direction === 'down') {
+        } 
+        else if (this.state.cursors.right.isDown) {
+            this.state.faune.setVelocityX(walk);
+            this.state.faune.setVelocityY(0);
+            this.state.faune.anims.play('faune-walk-side', true);
+            this.state.faune.scaleX = 1
+            this.state.faune.body.offset.x = 8
+            this.state.direction = 'right'
+        } 
+        else if (this.state.cursors.up.isDown && this.state.cursors.run.isDown ) {
+                this.state.faune.setVelocityY(-run);
+                this.state.faune.setVelocityX(0);
+                this.state.faune.anims.play('faune-run-up', true);
+                this.state.direction = 'up'
+        } 
+        else if (this.state.cursors.up.isDown)  {
+            this.state.faune.setVelocityY(-walk);
+            this.state.faune.setVelocityX(0);
+            this.state.faune.anims.play('faune-walk-up', true);
+            this.state.direction = 'up'
+        }
+        else if (this.state.cursors.down.isDown && this.state.cursors.run.isDown ) {
+                this.state.faune.setVelocityY(run);
+                this.state.faune.setVelocityX(0);
+                this.state.faune.anims.play('faune-run-down', true);
+                this.state.direction = 'down'
+        }
+        else if (this.state.cursors.down.isDown) {
+            this.state.faune.setVelocityY(walk);
+            this.state.faune.setVelocityX(0);
+            this.state.faune.anims.play('faune-walk-down', true);
+            this.state.direction = 'down'
+        }
+        else {
+            
+            if(this.state.direction === 'up' || this.state.direction === 'down') {
                 this.state.faune.anims.play(`faune-idle-${this.state.direction}`, true);
-                } 
-                else {
-                    if(this.state.direction === 'left') {
+            } 
+            else {
+                if(this.state.direction === 'left') {
                     this.state.faune.anims.play(`faune-idle-side`, true);
                     this.state.faune.scaleX = -1
-                    }
-                    else {
-                    this.state.faune.anims.play(`faune-idle-side`, true);
-                    }
-                } 
-                  this.state.faune.setVelocityX(0);
-                  this.state.faune.setVelocityY(0);
                 }
+                else {
+                    this.state.faune.anims.play(`faune-idle-side`, true);
+                }
+            } 
+
+            this.state.faune.setVelocityX(0);
+            this.state.faune.setVelocityY(0);
+
+        }
 
     }
 

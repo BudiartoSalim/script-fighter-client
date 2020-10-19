@@ -1,8 +1,8 @@
 import React from 'react'
-
 import {BrowserRouter as Router, Link , Switch , Route} from 'react-router-dom'
 import Login from './component/login'
 import GameScreen from './component/gamescreen'
+import BattleScene from './scenes/BattleScene'
 
 function App () {
 
@@ -14,6 +14,9 @@ function App () {
         </Route>
         <Route exact path="/game">
           <GameScreen/>
+        </Route>
+        <Route exact path="/battle">
+          <BattleScene/>
         </Route>
       </Switch>
     </Router>
