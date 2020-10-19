@@ -80,7 +80,7 @@ function Login () {
             }
           </div>
           <div className="iconstart">
-            <img src="./icon/start.png" className="" onClick={submitted}/>
+            <img alt="" src="./icon/start.png" className="" onClick={submitted}/>
           </div>
         </div>
       </div>
