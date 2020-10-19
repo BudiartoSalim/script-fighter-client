@@ -50,12 +50,12 @@ function Login () {
   return (
     <>
       <div id="background">
-        <div>
+        <div className="login-form">
           <div>
               <div className="title center mt-60">
                   <h1>Script Fighter</h1>
               </div>
-            <InputGroup className="mb-3 width-30 center">
+            <InputGroup className="mb-3">
               <FormControl
                 type="email"
                 name="email"
@@ -64,10 +64,7 @@ function Login () {
                 onChange={onChangeText}
               />
             </InputGroup>
-
-          </div>
-          <div>
-            <InputGroup className="mb-3 width-30 center">
+            <InputGroup className="mb-3">
               <FormControl
                 type="password"
                 name="password"
@@ -83,7 +80,7 @@ function Login () {
             }
           </div>
           <div className="iconstart">
-            <img src="./icon/start.png" className="ml-45" onClick={submitted}/>
+            <img alt="" src="./icon/start.png" className="" onClick={submitted}/>
           </div>
         </div>
       </div>

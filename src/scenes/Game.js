@@ -91,7 +91,7 @@ export default class Game extends Phaser.Scene
 
         wallsLayer.setCollisionByProperty({ collides: true }) // From Tiled application
 
-        let debugGraphics = this.add.graphics().setAlpha(0.75)
+        // let debugGraphics = this.add.graphics().setAlpha(0.75)
 
         // wallsLayer.renderDebug(debugGraphics, {
         //     tileColor: null,
@@ -101,10 +101,17 @@ export default class Game extends Phaser.Scene
 
         //Moving object properties (Tree, ...., .....)
 
-        let tree = this.add.sprite(93,614, 'tree')
+        let tree1 = this.add.sprite(93,614, 'tree')
+        let tree2 = this.add.sprite(205,582, 'tree')
 
         this.anims.create({
-            key:'tree',
+            key:'tree1',
+            frames: this.anims.generateFrameNumbers( 'tree', {start: 0, end: 7}),
+            repeat: -1,
+            frameRate: 10
+        })
+        this.anims.create({
+            key:'tree2',
             frames: this.anims.generateFrameNumbers('tree', {start: 0, end: 7}),
             repeat: -1,
             frameRate: 10
@@ -113,7 +120,8 @@ export default class Game extends Phaser.Scene
 
         // Run moving object
         this.state.monster.brown.anims.play('brown-monster')
-        tree.anims.play('tree')
+        tree1.anims.play('tree1')
+        tree2.anims.play('tree2')
 
 
     //idle position

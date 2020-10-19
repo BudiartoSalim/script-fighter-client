@@ -1,31 +1,11 @@
 import React, {useState} from 'react'
 import Phaser from 'phaser'
 import { IonPhaser } from '@ion-phaser/react'
-import Preloader from '../scenes/Preloader' 
 import Game from '../scenes/Game' 
-
-/**
- *     game = {
-      type: Phaser.AUTO,
-      width: 1600,
-      height: 1600,
-      physics: {
-        default: 'arcade',
-        arcade: {
-          gravity: { y: 0 },
-          debug: false
-        }
-      },
-      scene: [Game],
-      scale: {
-        zoom: 2
-      }
-    }
- */
 
 function GameScreen() {
 
-  const [ state, setState ] = useState({
+  const [ state ] = useState({
     initialize: true,
     game: {
       width: 1600,
