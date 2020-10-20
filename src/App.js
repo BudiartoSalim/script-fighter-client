@@ -5,7 +5,7 @@ import Login from './component/login'
 import GameScreen from './component/gamescreen'
 import BattleScene from './scenes/BattleScene'
 import LeaderboardScene from './scenes/Leaderboard'
-
+import ShopScene from './scenes/ShopScene'
 function App () {
 
   return (
@@ -22,8 +22,11 @@ function App () {
         <Route exact path="/battle">
           <BattleScene/>
         </Route>
-        <Route exact path="/battle">
+        <Route exact path="/leaderboard">
           <LeaderboardScene/>
+        </Route>
+        <Route exact path="/shop">
+          <ShopScene/>
         </Route>
       </Switch>
     </Router>

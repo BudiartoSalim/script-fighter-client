@@ -32,8 +32,13 @@ export default function ShopScene() {
 
   return (
     <>
-      <Container>
-        <Row style={{ backgroundColor: 'black', padding: '20px' }}>
+      <Container style={{ marginTop: '5%'}}>
+        <Row style={{alignContent: 'center'}}>
+          <div style={{ width: '100%', textAlign: 'center'}}>
+            <h1>Shop</h1>
+          </div>
+        </Row>
+        <Row >
           { loadingStatus && (
             <>
               <h1>Loading shop...</h1>
@@ -50,8 +55,8 @@ export default function ShopScene() {
           {!loadingStatus && !errorStatus && (
             shopContents.map((content) => {
               return (
-                <Col sm={4} md={4} lg={4} xl={4}>
-                  <ShopContent key={content.id} item={content} />
+                <Col sm={4} md={4} lg={4} xl={4} key={content.id}> 
+                  <ShopContent  item={content} />
                 </Col>
               )
             })
