@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Row, Col, Table, ProgressBar, Button } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
 import ShopContent from '../component/ShopContent';
 
@@ -25,6 +25,7 @@ export default function ShopScene() {
       setErrorStatus(false);
     }).catch((err) => {
       setErrorStatus(err.response);
+      setLoadingStatus(false);
     })
 
   }, [])
@@ -33,6 +34,19 @@ export default function ShopScene() {
     <>
       <Container>
         <Row style={{ backgroundColor: 'black', padding: '20px' }}>
+          { loadingStatus && (
+            <>
+              <h1>Loading shop...</h1>
+            </>
+          )
+          }
+          {
+            errorStatus && (
+              <>
+                <h1>{errorStatus}</h1>
+              </>
+            )
+          }
           {!loadingStatus && !errorStatus && (
             shopContents.map((content) => {
               return (
