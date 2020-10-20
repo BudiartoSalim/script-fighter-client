@@ -208,6 +208,11 @@ export default class Game extends Phaser.Scene
             frameRate: 15,
         })
 
+        //adding camera movement (follow)
+
+        this.cameras.main.startFollow(this.state.faune, true)
+
+
         // adding collider for wall and character (can't walk through wall)
         this.physics.add.collider(this.state.faune, wallsLayer)
 

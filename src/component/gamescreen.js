@@ -8,8 +8,8 @@ function GameScreen() {
   const [ state ] = useState({
     initialize: true,
     game: {
-      width: 1600,
-      height: 1600,
+      width: 800,
+      height: 600,
       type: Phaser.AUTO,
       physics: {
         default: 'arcade',

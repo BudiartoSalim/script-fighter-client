@@ -202,23 +202,23 @@ function BattleScene () {
                 {/* Looping option here */}
                 <Form>
                 <Form.Check 
-                        type='checkbox'
-                        id={`default-checkbox`}
+                        type='radio'
+                        id={`default-radio1`}
                         label={`The <footer>`}
                       />
                 <Form.Check 
-                        type='checkbox'
-                        id={`default-checkbox`}
+                        type='radio'
+                        id={`default-radio2`}
                         label={`The <head> section`}
                       />
                 <Form.Check 
-                        type='checkbox'
-                        id={`default-checkbox`}
+                        type='radio'
+                        id={`default-radio3`}
                         label={`The <body> section`}
                       />
                 <Form.Check 
-                        type='checkbox'
-                        id={`default-checkbox`}
+                        type='radio'
+                        id={`default-radio4`}
                         label={`Both the <head> section and the <body> section are correct`}
                       />
                   <div id="battle-scene-buttons">
