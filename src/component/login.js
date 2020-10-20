@@ -1,7 +1,13 @@
 import React, {useState, useEffect} from 'react'
 import {useHistory} from 'react-router-dom'
 import axios from 'axios'
-import {InputGroup, FormControl} from 'react-bootstrap'
+import {
+  InputGroup,
+  Form,
+  FormControl,
+  Button,
+  Alert
+} from 'react-bootstrap'
 function Login () {
 
   const [loginForm , setLoginForm] = useState({
@@ -26,8 +32,8 @@ function Login () {
 
   }
 
-  function submitted() {
-    
+  function submitted(event) {
+    event.preventDefault()
     axios({
       method: 'POST',
       url: 'http://localhost:3000/login',
@@ -61,39 +67,42 @@ function Login () {
   return (
     <>
       <div id="background">
-        <div className="login-form">
-          <div>
+        <div className="login-box p-3">
               <div className="title center mt-60">
                   <h1>Script Fighter</h1>
               </div>
-            <InputGroup className="mb-3">
-              <FormControl
-                type="email"
-                name="email"
-                placeholder="Email"
-                aria-label="Email"
-                onChange={onChangeText}
-              />
-            </InputGroup>
-            <InputGroup className="mb-3">
-              <FormControl
-                type="password"
-                name="password"
-                placeholder="Password"
-                aria-label="Password"
-                onChange={onChangeText}
-              />
-            </InputGroup>
+              <Form onSubmit={(event) => submitted(event)} className="login-form">
+                <Form.Group controlId="formBasicEmail">
+                  <Form.Label>Email address</Form.Label>
+                  <Form.Control
+                    style={{fontFamily: 'dogica'}}
+                   type="email"
+                   name="email"
+                   placeholder="Enter your email"
+                   onChange={onChangeText}
+                   />
+                </Form.Group>
+
+                <Form.Group controlId="formBasicPassword">
+                  <Form.Label>Password</Form.Label>
+                  <Form.Control
+                  style={{fontFamily: 'dogica'}}
+                  type="password"
+                  name="password"
+                  placeholder="Enter your password"
+                  onChange={onChangeText}
+                  />
+                </Form.Group>
+                <Button variant="secondary" type="submit">
+                  Start
+                </Button>
+              </Form>
           </div>
-          <div className="center w-200">
-            { errForm &&
-              <h4 className="title  red fs-48 bg-white-op-75 center">{errForm}</h4>
+          { errForm &&  
+              <Alert style={{fontFamily: 'dogica', margin: "20px"}} variant="warning">
+               {errForm}
+              </Alert>
             }
-          </div>
-          <div className="iconstart">
-            <img src="./icon/start.png" alt="start" onClick={submitted}/>
-          </div>
-        </div>
       </div>
     </>
   )
