@@ -1,6 +1,15 @@
 import React , {useEffect, useState}from 'react'
 import {useHistory} from 'react-router-dom'
-import {Container, Row, Col, Table, ProgressBar, Button} from 'react-bootstrap'
+import {
+  Container,
+  Row,
+  Col,
+  Table,
+  ProgressBar,
+  Button,
+  Image,
+  Form
+} from 'react-bootstrap'
 import axios from 'axios'
 function BattleScene () {
 
@@ -143,114 +152,190 @@ function BattleScene () {
   }
 
   return (
-    <Container>
-      <Row>
-        <Col sm={6} md={6} lg={6} xl={6}>
-          <Container>
-            <Row>
-                <img src={monster.monster_image} alt={monster.monster_name} style={{width: "200px", height:"150px"}}/>
-            </Row>
-            <Row>
-              <Table striped bordered hover>
-                  <tbody>
-                    <tr>
-                      <td>{monster.monster_name}</td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <ProgressBar variant="danger" now={ hpMonster / monster.hp * 100} label="HP" />
-                      </td>
-                    </tr>
-                  </tbody>
-                </Table>
-            </Row>
-          </Container>
-        </Col>
-        <Col sm={6} md={6} lg={6} xl={6}>
-        { question &&
-          <Table>
-            <tbody>
-            <tr>
-              <td>
-                {question.question}
-              </td>
-            </tr>
-            { isAnswer &&
-              <tr>
-                <td>
-                  Explanation ? <a href={question.explanation} target="_blank" rel="noopener noreferrer">  Click Here </a>
-                </td>
-              </tr>
-            }
-            </tbody>
-          </Table>
-        }
-        </Col>
-      </Row>
-      <Row>
-        <Col sm={12} md={12} lg={12} xl={12}>
-          <ProgressBar variant="success" now={countdown / time * 100}/>
-        </Col>
-      </Row>
-      <Row>
-        <Col sm={6} md={6} lg={6} xl={6}>
-          <Container>
-            <Row>
-              <Col sm={6} md={6} lg={6} xl={6}>
-                <img src="https://shockoe.com/wp-content/uploads/2020/06/img_5ee42878a59f3.png" alt="character" style={{width:"200px", height:"200px"}}></img>
-              </Col>
-              <Col sm={6} md={6} lg={6} xl={6}> 
-                <Table striped bordered hover>
-                  <tbody>
-                    <tr>
-                      <td>{username}</td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <ProgressBar variant="danger" now={ hpCharacter / characterStatus.hp * 100} label="HP" />
-                      </td>
-                    </tr>
-                  </tbody>
-                </Table> 
-              </Col>
-            </Row>
-          </Container>
-        </Col>
-          <Col sm={6} md={6} lg={6} xl={6}>
-            <Container>
-            <Table>
-              {
-                !isAnswer &&
-                <tbody>
-                  <tr>
-                    { question.answer &&
-                      question.answer.split(',').map((ans , idx) => (
-                        idx < 2 ? 
-                        <td key={idx}>
-                        <Button  variant="primary" onClick={clickAnswer} value={ans} disabled={isAnswer}>{ans}</Button>
-                        </td> : null
-                      ))
-                    }
-                  </tr>
-                  <tr>
-                    {
-                      question.answer && question.answer.split(',').length > 2 &&
-                      question.answer.split(',').map((ans , idx) => (
-                        idx > 1 ?
-                        <td key={idx}>
-                          <Button key={idx} variant="primary" onClick={clickAnswer} disabled={isAnswer} value={ans}>{ans}</Button>
-                        </td> 
-                        : null
-                      ))
-                    }
-                  </tr>
-                </tbody>
-              }
-            </Table>
-            </Container>
-          </Col>
-      </Row>
+
+    <Container style={{fontFamily: 'dogicabold'}} className="mt-3">
+        <Row>
+          <div id="battle-scene-left" className="border border-dark col-sm-4">
+          <Image
+          src="https://img.itch.zone/aW1nLzE5ODA4NjQuZ2lm/original/Fe49uB.gif"
+          rounded
+          className="border border-dark"
+          style={{
+            width:"200px",
+            marginLeft: "65px",
+            marginTop: "25px",
+            marginBottom: "25px"
+          }}
+          />
+          <h5>
+            Monster Status
+          </h5>
+          <div style={{fontFamily: 'dogica'}}>
+          <p>Name: Si Jambul</p>
+          <p>HP: {hpMonster}</p>
+          <p>Atk: 134</p>
+          <p>Def:450</p>
+          <p>Def:450</p>
+          </div>
+          <p>Difficulty: Hard</p>
+          </div>
+          <div id="battle-scene-right" className="border border-dark col-sm-8 p-3">
+            <div id="player-status">
+              <h5>Player Status</h5>
+              <div style={{fontFamily: 'dogica'}}>
+                <p>Player Name: {username} </p>
+                <ProgressBar variant="danger" now={ hpMonster / monster.hp * 100} label="HP" />
+                <p>Atk:200 </p>
+                <p>def:120</p>
+              </div>
+            </div>
+            <div id="time-box">
+              <h5>Time</h5>
+              <ProgressBar variant="success" now={countdown / time * 100}/>
+            </div>
+            <div id="question-box">
+              <h5>Question</h5>
+              <h5
+              style={{fontFamily: 'dogica'}}
+              >What is the correct HTML for making a hyperlink?</h5>
+              <div style={{fontFamily: 'dogica'}}>
+                {/* Looping option here */}
+                <Form>
+                <Form.Check 
+                        type='checkbox'
+                        id={`default-checkbox`}
+                        label={`The <footer>`}
+                      />
+                <Form.Check 
+                        type='checkbox'
+                        id={`default-checkbox`}
+                        label={`The <head> section`}
+                      />
+                <Form.Check 
+                        type='checkbox'
+                        id={`default-checkbox`}
+                        label={`The <body> section`}
+                      />
+                <Form.Check 
+                        type='checkbox'
+                        id={`default-checkbox`}
+                        label={`Both the <head> section and the <body> section are correct`}
+                      />
+                </Form>
+              </div>
+            </div>
+          </div>
+        </Row>
     </Container>
+
+    // <Container>
+    //   <Row>
+    //     <Col sm={6} md={6} lg={6} xl={6}>
+    //       <Container>
+    //         <Row>
+    //             <img src={monster.monster_image} alt={monster.monster_name} style={{width: "200px", height:"150px"}}/>
+    //         </Row>
+    //         <Row>
+    //           <Table striped bordered hover>
+    //               <tbody>
+    //                 <tr>
+    //                   <td>{monster.monster_name}</td>
+    //                 </tr>
+    //                 <tr>
+    //                   <td>
+    //                     <ProgressBar variant="danger" now={ hpMonster / monster.hp * 100} label="HP" />
+    //                   </td>
+    //                 </tr>
+    //               </tbody>
+    //             </Table>
+    //         </Row>
+    //       </Container>
+    //     </Col>
+    //     <Col sm={6} md={6} lg={6} xl={6}>
+    //     { question &&
+    //       <Table>
+    //         <tbody>
+    //         <tr>
+    //           <td>
+    //             {question.question}
+    //           </td>
+    //         </tr>
+    //         { isAnswer &&
+    //           <tr>
+    //             <td>
+    //               Explanation ? <a href={question.explanation} target="_blank" rel="noopener noreferrer">  Click Here </a>
+    //             </td>
+    //           </tr>
+    //         }
+    //         </tbody>
+    //       </Table>
+    //     }
+    //     </Col>
+    //   </Row>
+    //   <Row>
+    //     <Col sm={12} md={12} lg={12} xl={12}>
+    //       <ProgressBar variant="success" now={countdown / time * 100}/>
+    //     </Col>
+    //   </Row>
+    //   <Row>
+    //     <Col sm={6} md={6} lg={6} xl={6}>
+    //       <Container>
+    //         <Row>
+    //           <Col sm={6} md={6} lg={6} xl={6}>
+    //             <img src="https://shockoe.com/wp-content/uploads/2020/06/img_5ee42878a59f3.png" alt="character" style={{width:"200px", height:"200px"}}></img>
+    //           </Col>
+    //           <Col sm={6} md={6} lg={6} xl={6}> 
+    //             <Table striped bordered hover>
+    //               <tbody>
+    //                 <tr>
+    //                   <td>{username}</td>
+    //                 </tr>
+    //                 <tr>
+    //                   <td>
+    //                     <ProgressBar variant="danger" now={ hpCharacter / characterStatus.hp * 100} label="HP" />
+    //                   </td>
+    //                 </tr>
+    //               </tbody>
+    //             </Table> 
+    //           </Col>
+    //         </Row>
+    //       </Container>
+    //     </Col>
+    //       <Col sm={6} md={6} lg={6} xl={6}>
+    //         <Container>
+    //         <Table>
+    //           {
+    //             !isAnswer &&
+    //             <tbody>
+    //               <tr>
+    //                 { question.answer &&
+    //                   question.answer.split('!@!').map((ans , idx) => (
+    //                     idx < 2 ? 
+    //                     <td key={idx}>
+    //                     <Button  variant="primary" onClick={clickAnswer} value={ans} disabled={isAnswer}>{ans}</Button>
+    //                     </td> : null
+    //                   ))
+    //                 }
+    //               </tr>
+    //               <tr>
+    //                 {
+    //                   question.answer && question.answer.split('!@!').length > 2 &&
+    //                   question.answer.split('!@!').map((ans , idx) => (
+    //                     idx > 1 ?
+    //                     <td key={idx}>
+    //                       <Button key={idx} variant="primary" onClick={clickAnswer} disabled={isAnswer} value={ans}>{ans}</Button>
+    //                     </td> 
+    //                     : null
+    //                   ))
+    //                 }
+    //               </tr>
+    //             </tbody>
+    //           }
+    //         </Table>
+    //         </Container>
+    //       </Col>
+    //   </Row>
+    // </Container>
   )
 }
 

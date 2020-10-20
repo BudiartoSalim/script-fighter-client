@@ -1,17 +1,25 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+    sans-serif; */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
+/* code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
-}
-@font-face { font-family: 'pixel'; src: url('./assets/font/PixelBit-Free.ttf'); } 
+} */
+
+@font-face { 
+  font-family: 'dogica'; src: url('./assets/font/dogica.ttf'); 
+} 
+
+@font-face { 
+  font-family: 'dogicabold'; src: url('./assets/font/dogicabold.ttf'); 
+} 
+
 
 #background {
   height: 100vh;
@@ -21,13 +29,39 @@ code {
   padding-top: 80px !important;
 }
 
+.login-box {
+  font-family: 'dogicabold';
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px;
+  height: 400px;
+  background-color: rgba(255,255,255, 0.5)
+}
+
 .login-form {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: space-evenly;
+  width: 400px;
 }
 
+#monster-card {
+  display: flex;
+  background-color: burlywood;
+}
 
+#battle-scene-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#question-box {
+  display: flex;
+  flex-direction: column;
+}
 
 .mt-60 {
   margin-top: 60%;
@@ -42,17 +76,10 @@ code {
 }
 
 .title{
-  font-family: 'pixel';
   width: 100%;
   text-align: center;
 }
-.red {
-  color: red;
-}
 
-.fs{
-  font-size: 24px;
-}
 
 .bg-white-op-75 {
   width: 35%;
