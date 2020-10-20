@@ -1,32 +1,51 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Container, Row, Col, Table, ProgressBar, Button, Card } from 'react-bootstrap';
 import axios from 'axios';
 
 export default function ShopContent(props) {
-  const [error, setError] = useState(false);
+  const [error, setError] = useState('');
 
   async function buyItem() {
     try {
       const { data } = await axios({
         method: 'PUT',
-        url: `http://localhost:3000/shop/${props.item.id}`
+        url: `http://localhost:3000/shop/${props.item.id}`,
+        headers: {
+          access_token: localStorage.getItem('access_token')
+        }
       })
+
       if (data.userStatus) {
-        setError(false);
-        localStorage.setItem('userStatus', data.userStatus);
+        localStorage.setItem('userStatus', JSON.stringify(data.userStatus));
       } else {
         setError(data.message);
       }
     } catch (err) {
-      setError(err.response);
+      setError(err.response.data.message);
     }
   }
+
+  useEffect(() => {
+    
+    setTimeout(() => {
+      setError('')
+    }, 2000)
+
+  }, [error])
 
   return (
     <>
       <Card>
         <Card.Body>
-          <Card.Title>{props.item.item_name}</Card.Title>
+          <Card.Title>
+            {props.item.item_name}
+            <div style={{height: "30px"}}>
+            {
+              error &&
+              <h3 style={{fontSize: '24px', color: 'red'}}>{error}</h3>
+            }
+            </div>
+          </Card.Title>
           <Card.Text>
             {props.item.description}
           </Card.Text>
@@ -101,14 +120,7 @@ export default function ShopContent(props) {
               )
             }
           </Row>
-          {error && (
-            <>
-              <Card.Text>
-                {error}
-              </Card.Text>
-            </>
-          )}
-          <Button variant="primary">Buy!</Button>
+          <Button variant="primary" onClick={buyItem}>Buy!</Button>
         </Card.Body>
       </Card>
     </>
