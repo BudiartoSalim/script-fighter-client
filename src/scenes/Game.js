@@ -66,6 +66,9 @@ export default class Game extends Phaser.Scene
         //set hitbox physics for character
         this.state.faune.body.setSize(15,20)
 
+         //adding camera movement (follow)
+        this.cameras.main.startFollow(this.state.faune, true)
+
         // Initiate monster as much as Coordinate length
         for(let i = 0 ; i < this.state.coordinate.length ; i++){
 
@@ -110,7 +113,7 @@ export default class Game extends Phaser.Scene
         wallsLayer.setCollisionByProperty({ collides: true }) // From Tiled application
         
         // Add Text for level
-        this.add.text(0,0 , `level : ${this.state.userStatus.level}`)
+        this.add.text(10,20 , `level : ${this.state.userStatus.level}`, '')
 
         // Add Text status After Battle
         if(this.state.statusBattle) {

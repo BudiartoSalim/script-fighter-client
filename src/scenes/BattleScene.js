@@ -13,22 +13,30 @@ import {
 import axios from 'axios'
 function BattleScene () {
 
-  const [question, setQuestion] = useState({ })
+  const [question, setQuestion] = useState([])
+  const [questionNow , setQuestionNow] = useState({})
+  const [idxQuestion, setIdxQuestion] = useState(0)
   const [monster, setMonster] = useState({ })
   const [hpMonster, setHpMonster] = useState(0)
   const [hpCharacter, setHpCharacter] = useState(0)
   const [characterStatus , setCharacterStatus] = useState({})
   const [username, setUsername] = useState('')
   const [time] = useState(20)
-  const [countdown, setCountDown] = useState(20)
-  const [isAnswer , setIsAnswer] = useState(false)
+  const [countdown, setCountDown] = useState(time)
+  const [submittedAnswer, setSubmittedAnswer] = useState('')
   const history = useHistory()
 
   useEffect(() => {
     setCharacterStatus(JSON.parse(localStorage.getItem('userStatus')))
-    setQuestion(JSON.parse(localStorage.getItem('question-now')))
+    setQuestion(JSON.parse(localStorage.getItem('question')))
     setMonster(JSON.parse(localStorage.getItem('monster-now')))
     setUsername(localStorage.getItem('username'))
+
+    setInterval(() => {   
+      console.log('timeout invoked')
+      setCountDown(countdown - 0.1)
+    }, 100)
+
   }, [])
 
   useEffect(() => {
@@ -36,118 +44,198 @@ function BattleScene () {
     setHpCharacter(characterStatus.hp)
   }, [monster, characterStatus])
 
-  setTimeout(() => {
-    setCountDown(countdown - 0.1)
-  }, 100)
+  useEffect(() => {
+    
+    let idx = idxQuestion
+    if(idxQuestion >= question.length){
+      idx = Math.floor(Math.random() * question.length)
+    }
 
-  // useEffect(() => {
-  //   if(countdown <= 0) {
-  //     localStorage.setItem('statusbattle' , 'lose')
-  //     history.push('/game')
-  //   }
-  // }, [countdown])
-
-  function resetCountdown () {
-    setTimeout( () => {
-      setIsAnswer(false)
-    }, 2000)
-
-    setCountDown(time)
-  }
-
-  function clickAnswer (e) {
-
-    setIsAnswer(true)    
- 
-    axios({
-      method: 'POST',
-      url: `http://localhost:3000/combat/question/${question.id}`,
-      headers: {
-        access_token : localStorage.getItem('access_token')
-      },
-      data: {
-        answer : e.target.value
-      }
+    setQuestionNow({
+      ...question[idx]
     })
-      .then(({data}) => {
-        console.log(monster.experience, monster.money)
-        if(data.answerResult) {
-          setHpMonster(hpMonster - (characterStatus.atk * 1.5 - (monster.def / 2)))
-          resetCountdown()
-          if((hpMonster - (characterStatus.atk * 1.5 - (monster.def / 2))) <= 0){
-            setHpMonster(0)
-            console.log('you win')
-          }
-          
-        //   localStorage.setItem('statusbattle' , 'win')
 
-        //   return axios({
-        //     method: 'PUT',
-        //     url: 'http://localhost:3000/combat/experience',
-        //     headers: {
-        //       access_token: localStorage.getItem('access_token')
-        //     },
-        //     data: {
-        //       experience: monster.experience,
-        //       money: monster.money
-        //     }
-        //   })
-        //   .then(({data}) => {
+  }, [question, idxQuestion])
 
-        //     localStorage.setItem('userStatus', JSON.stringify(data.status))
+  useEffect(() => {
+    if(hpMonster && hpMonster <= 0) {
 
-        //     let questionnow = JSON.parse(localStorage.getItem('question-now'))
-        //     let allMonster = JSON.parse(localStorage.getItem('monster'))
+      localStorage.setItem('statusbattle' , 'win')
 
-        //     let filtered = allMonster.questions.filter( quest => quest.id != questionnow.id)
-        //     localStorage.removeItem('question-now')
-        //     localStorage.removeItem('monster-now')
-            
-        //     if(filtered.length != 0){
-        //       localStorage.setItem('monster', JSON.stringify({...allMonster , questions: filtered}))
-        //       setTimeout(() => {
-        //               history.push('/game')
-        //             }, 2000)
-        //     } else {
-              
-        //         return axios ({
-        //           method: 'GET',
-        //           url: 'http://localhost:3000/monster',
-        //           headers:{
-        //             access_token : localStorage.getItem('access_token')
-        //           }
-        //         })
-        //           .then(({data}) => {
-        //             localStorage.setItem('monster', JSON.stringify(data))
-        //             setTimeout(() => {
-        //               history.push('/game')
-        //             }, 2000)
-        //           })
-        //     }
-
-        //   })
-        // } else {
-
-        //   localStorage.setItem('statusbattle' , 'lose')
-        //   setTimeout(() => {
-        //     history.push('/game')
-        //   }, 2000)
-
-        } else {
-
-          setHpCharacter(hpCharacter - monster.atk - characterStatus.def)
-          // console.log(hpCharacter)
-          resetCountdown()
-          if((hpCharacter - monster.atk - characterStatus.def) <= 0) {
-            setHpCharacter(0)
-            console.log('lose')
-          }
+      axios({
+        method: 'PUT',
+        url: 'http://localhost:3000/combat/experience',
+        headers: {
+          access_token: localStorage.getItem('access_token')
+        },
+        data: {
+          experience: monster.experience,
+          money: monster.money
         }
-
+      })
+      .then(({data}) => {
+        localStorage.setItem('userStatus', JSON.stringify(data.status))
+        history.push('/game')
       })
       .catch(err => {
         console.log(err)
       })
+    }
+  }, [hpMonster])
+
+  useEffect(() => {
+    
+    if(hpCharacter && hpCharacter <= 0) {
+      setHpCharacter(0)
+      localStorage.setItem('statusbattle' , 'lose')
+      history.push('/game')
+    }
+
+  }, [hpCharacter])
+
+  useEffect(() => {
+    
+    if(countdown === 0) {
+      setIdxQuestion(idxQuestion + 1)
+      setHpCharacter(hpCharacter - 30)
+      resetCountdown()
+    } else if ( countdown <= 0) {
+      resetCountdown()
+    }
+
+  }, [countdown])
+
+  function resetCountdown () {
+    setCountDown(time)
+  }
+
+  function changeAnswer(e) {
+    setSubmittedAnswer(e.target.value)
+  }
+
+  function ranAway() {
+    localStorage.setItem('statusbattle' , 'lose')
+    history.push('game')
+  }
+
+  function clickAnswer (e) {
+
+      axios({
+        method: 'POST',
+        url: `http://localhost:3000/combat/question/${questionNow.id}`,
+        headers: {
+          access_token : localStorage.getItem('access_token')
+        },
+        data: {
+          answer : submittedAnswer
+        }
+      })
+        .then(({data}) => {
+          resetCountdown()
+          setIdxQuestion(idxQuestion + 1)
+
+          if(data.answerResult) {
+            setHpMonster(hpMonster - 20)
+          } else {
+            setHpCharacter(hpCharacter - 30)
+          }
+
+        })
+        .catch(err => {
+          console.log(err)
+        })
+
+    // setIsAnswer(true)    
+ 
+    // axios({
+    //   method: 'POST',
+    //   url: `http://localhost:3000/combat/question/${question.id}`,
+    //   headers: {
+    //     access_token : localStorage.getItem('access_token')
+    //   },
+    //   data: {
+    //     answer : e.target.value
+    //   }
+    // })
+    //   .then(({data}) => {
+    //     console.log(monster.experience, monster.money)
+    //     if(data.answerResult) {
+    //       setHpMonster(hpMonster - (characterStatus.atk * 1.5 - (monster.def / 2)))
+    //       resetCountdown()
+    //       if((hpMonster - (characterStatus.atk * 1.5 - (monster.def / 2))) <= 0){
+    //         setHpMonster(0)
+    //         console.log('you win')
+    //       }
+          
+    //     //   localStorage.setItem('statusbattle' , 'win')
+
+    //     //   return axios({
+    //     //     method: 'PUT',
+    //     //     url: 'http://localhost:3000/combat/experience',
+    //     //     headers: {
+    //     //       access_token: localStorage.getItem('access_token')
+    //     //     },
+    //     //     data: {
+    //     //       experience: monster.experience,
+    //     //       money: monster.money
+    //     //     }
+    //     //   })
+    //     //   .then(({data}) => {
+
+    //     //     localStorage.setItem('userStatus', JSON.stringify(data.status))
+
+    //     //     let questionnow = JSON.parse(localStorage.getItem('question-now'))
+    //     //     let allMonster = JSON.parse(localStorage.getItem('monster'))
+
+    //     //     let filtered = allMonster.questions.filter( quest => quest.id != questionnow.id)
+    //     //     localStorage.removeItem('question-now')
+    //     //     localStorage.removeItem('monster-now')
+            
+    //     //     if(filtered.length != 0){
+    //     //       localStorage.setItem('monster', JSON.stringify({...allMonster , questions: filtered}))
+    //     //       setTimeout(() => {
+    //     //               history.push('/game')
+    //     //             }, 2000)
+    //     //     } else {
+              
+    //     //         return axios ({
+    //     //           method: 'GET',
+    //     //           url: 'http://localhost:3000/monster',
+    //     //           headers:{
+    //     //             access_token : localStorage.getItem('access_token')
+    //     //           }
+    //     //         })
+    //     //           .then(({data}) => {
+    //     //             localStorage.setItem('monster', JSON.stringify(data))
+    //     //             setTimeout(() => {
+    //     //               history.push('/game')
+    //     //             }, 2000)
+    //     //           })
+    //     //     }
+
+    //     //   })
+    //     // } else {
+
+    //     //   localStorage.setItem('statusbattle' , 'lose')
+    //     //   setTimeout(() => {
+    //     //     history.push('/game')
+    //     //   }, 2000)
+
+    //     } else {
+
+    //       setHpCharacter(hpCharacter - monster.atk - characterStatus.def)
+    //       // console.log(hpCharacter)
+    //       resetCountdown()
+    //       if((hpCharacter - monster.atk - characterStatus.def) <= 0) {
+    //         setHpCharacter(0)
+    //         console.log('lose')
+    //       }
+    //     }
+
+    //   })
+    //   .catch(err => {
+    //     console.log(err)
+    //   })
 
   }
 
@@ -171,71 +259,60 @@ function BattleScene () {
             Monster Status
           </h5>
           <div style={{fontFamily: 'dogica'}}>
-          <p>Name: Si Jambul</p>
+          <p>{monster.name}</p>
           <p>HP: {hpMonster}</p>
-          <p>Atk: 134</p>
-          <p>Def:450</p>
-          <p>Def:450</p>
+          <p>Atk: {monster.atk}</p>
+          <p>Def: {monster.def}</p>
           </div>
-          <p>Difficulty: Hard</p>
+          <p>Difficulty: { monster.difficulty === 0 ? 'Easy' : monster.difficulty === 1 ? 'Normal' : 'Hard'}</p>
           </div>
           <div id="battle-scene-right" className="border border-dark col-sm-8 p-3">
             <div id="player-status">
               <h5>Player Status</h5>
               <div style={{fontFamily: 'dogica'}}>
-                <p>Player Name: {username} </p>
-                <ProgressBar variant="danger" now={ hpMonster / monster.hp * 100} label="HP" />
-                <p>Atk:200 </p>
-                <p>def:120</p>
+                <p>Player Name: {username.toUpperCase()} </p>
+                <ProgressBar variant="danger" now={ hpCharacter / characterStatus.hp * 100} label="HP" />
+                <p>Atk: {characterStatus.atk} </p>
+                <p>Def: {characterStatus.def}</p>
               </div>
             </div>
             <div id="time-box">
               <h5>Time</h5>
               <ProgressBar variant="success" now={countdown / time * 100}/>
             </div>
-            <div id="question-box">
-              <h5>Question</h5>
-              <h5
-              style={{fontFamily: 'dogica'}}
-              >What is the correct HTML for making a hyperlink?</h5>
-              <div style={{fontFamily: 'dogica'}}>
-                {/* Looping option here */}
-                <Form>
-                <Form.Check 
-                        type='radio'
-                        name="answer"
-                        id={`default-checkbox1`}
-                        label={`The <footer>`}
-                      />
-                <Form.Check 
-                        name="answer"
-                        type='radio'
-                        id={`default-checkbox2`}
-                        label={`The <head> section`}
-                      />
-                <Form.Check 
-                        name="answer"
-                        type='radio'
-                        id={`default-checkbox3`}
-                        label={`The <body> section`}
-                      />
-                <Form.Check 
-                        name="answer"
-                        type='radio'
-                        id={`default-checkbox4`}
-                        label={`Both the <head> section and the <body> section are correct`}
-                      />
-                  <div id="battle-scene-buttons">
-                  <Button className="mt-3">
-                    Submit
-                  </Button>
-                  <Button className="mt-3 btn btn-danger">
-                    Run Away!
-                  </Button>
-                  </div>
-                </Form>
+            {
+              question && 
+              <div id="question-box">
+                <h5>Question</h5>
+                <h5
+                style={{fontFamily: 'dogica'}}
+                >{questionNow.question}</h5>
+                <div style={{fontFamily: 'dogica'}}>
+                    <Form>
+                      { questionNow.answer && 
+                        questionNow.answer.split('!@!').map( ans => (
+                          <Form.Check
+                          key={ans} 
+                          type='radio'
+                          name="answer"
+                          label={ans}
+                          value={ans}
+                          onChange={changeAnswer}
+                        />
+                        ))
+                      }
+                      <div id="battle-scene-buttons">
+                      <Button className="mt-3" onClick={clickAnswer}>
+                        Submit
+                      </Button>
+                      <Button className="mt-3 btn btn-danger" onClick={ranAway}>
+                        Run Away!
+                      </Button>
+                      </div>
+                  </Form>
+                </div>
               </div>
-            </div>
+            }
           </div>
         </Row>
     </Container>
