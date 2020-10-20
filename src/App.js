@@ -25,6 +25,9 @@ function App () {
         <Route>
           <LeaderboardScene/>
         </Route>
+        <Route exact path="/register">
+          
+        </Route>
       </Switch>
     </Router>
   )
