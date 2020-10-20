@@ -2,6 +2,8 @@
 
 
 export default function preload() {
+
+  this.load.audio('nyan', './audio/nyan.mp3')
   let my = this.state
   this.state.username = localStorage.getItem('username')   
   let stat = JSON.parse(localStorage.getItem('userStatus')) //getting data user

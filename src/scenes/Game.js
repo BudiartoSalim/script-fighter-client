@@ -39,6 +39,7 @@ export default class Game extends Phaser.Scene
 
     create()
     {   
+        let music = this.sound.play('nyan', {loop : true});
         //dungeonTileSet is from dungeon tile set image (PNG)
         //outdoorTileSet is from outdoor tile set image (PNG)
         let dungeon = this.make.tilemap({ key: 'dungeon'}) //"dungeon" is from dungeon JSON file that we load
