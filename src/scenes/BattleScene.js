@@ -38,12 +38,13 @@ function BattleScene () {
   }, [])
 
   useEffect(() => {
-    console.log(intervalRunning)
-    let interval 
+    let interval
+    let timeout  
+
     if(intervalRunning && countdown === time) {
-      setTimeout(() => {
+      timeout = setTimeout(() => {
         interval = setInterval(() => {   
-          console.log('timeout invoked')
+          console.log('check')
             setCountDown(countdown => countdown - 0.1)
         }, 100)
       }, 1000)
@@ -55,6 +56,7 @@ function BattleScene () {
 
     return () => {
       console.log('cleanup')
+      clearTimeout(timeout)
       clearInterval(interval)
     }
 
@@ -154,9 +156,9 @@ function BattleScene () {
           setIdxQuestion(idxQuestion + 1)
           
           if(data.answerResult) {
-            setHpMonster(hpMonster - 4)
+            setHpMonster(hpMonster - 20)
           } else {
-            setHpCharacter(hpCharacter - 30)
+            setHpCharacter(hpCharacter - 300)
           }
 
             resetCountdown()
@@ -166,6 +168,7 @@ function BattleScene () {
           console.log(err)
         })
   }
+  
   return (
 
     <Container style={{fontFamily: 'dogicabold'}} className="mt-3">

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col , Button, Form} from 'react-bootstrap';
+import {useHistory} from 'react-router-dom'
 import axios from 'axios';
 import ShopContent from '../component/ShopContent';
 
@@ -7,9 +8,11 @@ export default function ShopScene() {
   const [shopContents, setShopContents] = useState([]);
   const [loadingStatus, setLoadingStatus] = useState(true);
   const [errorStatus, setErrorStatus] = useState(false);
-
+  const [userStatus, setUserStatus] = useState({})
+  const history = useHistory()
   //on page load, fetch item list based on current player stats
   useEffect(() => {
+    setUserStatus(JSON.parse(localStorage.getItem('userStatus')))
     setLoadingStatus(true);
     setErrorStatus(false);
     axios({
@@ -30,12 +33,20 @@ export default function ShopScene() {
 
   }, [])
 
+
+  function BackToGame() {
+    history.push('/game')
+  }
+
   return (
     <>
-      <Container style={{ marginTop: '5%'}}>
+      <Container style={{ marginTop: '5%'}} className="f-dogicabold">
         <Row style={{alignContent: 'center'}}>
           <div style={{ width: '100%', textAlign: 'center'}}>
-            <h1>Shop</h1>
+            <h1>
+              Shop
+            </h1> 
+            <Button onClick={BackToGame} variant={'danger'} style={{marginLeft: '85%'}}>Exit</Button>
           </div>
         </Row>
         <Row >

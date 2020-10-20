@@ -1,12 +1,13 @@
 import React, {useState, useEffect} from 'react'
 import  { useHistory } from 'react-router-dom'
-import { Container, Table } from 'react-bootstrap'
+import { Container, Table, Button } from 'react-bootstrap'
 import axios from 'axios'
 import LeaderboardRow from '../component/leaderboard-tablerow'
 function LeaderboardScene () {
 
   const [users , setUsers] = useState([])
   const [loading, setLoading] = useState(false)
+  const history = useHistory()
 
   useEffect( () => {
     setLoading(true)
@@ -24,15 +25,23 @@ function LeaderboardScene () {
     })
   }, [])
 
+  function BackToGame() {
+    history.push('/game')
+  }
+
   return (
-    <div id="leaderboard-page">
+    <div id="leaderboard-page" className="f-dogicabold">
       {
         loading &&
-        JSON.stringify(users)
+        <h1>
+          Loading
+        </h1>
       }
       {
         !loading && users &&
       <Container>
+        <h1 style={{textAlign: 'center'}}>Leaderboard</h1>
+        <Button variant="danger" onClick={BackToGame} style={{marginLeft: '80%'}}>Exit</Button>
         <Table  borderless>
           <thead>
             <tr>

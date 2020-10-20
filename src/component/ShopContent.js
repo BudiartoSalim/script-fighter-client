@@ -4,6 +4,7 @@ import axios from 'axios';
 
 export default function ShopContent(props) {
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   async function buyItem() {
     try {
@@ -14,8 +15,9 @@ export default function ShopContent(props) {
           access_token: localStorage.getItem('access_token')
         }
       })
-
+      
       if (data.userStatus) {
+        setSuccess('Successful Buying Item')
         localStorage.setItem('userStatus', JSON.stringify(data.userStatus));
       } else {
         setError(data.message);
@@ -29,9 +31,10 @@ export default function ShopContent(props) {
     
     setTimeout(() => {
       setError('')
+      setSuccess('')
     }, 2000)
 
-  }, [error])
+  }, [error, success])
 
   return (
     <>
@@ -39,7 +42,11 @@ export default function ShopContent(props) {
         <Card.Body>
           <Card.Title>
             {props.item.item_name}
-            <div style={{height: "30px"}}>
+            <div style={{height: "50px"}}>
+            {
+              success &&
+              <h3 style={{fontSize: '24px', color: 'green'}}>{success}</h3>
+            }
             {
               error &&
               <h3 style={{fontSize: '24px', color: 'red'}}>{error}</h3>
