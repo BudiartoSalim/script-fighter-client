@@ -27,18 +27,31 @@ export default class Game extends Phaser.Scene
                 atk: 0,
                 def: 0,
                 experience: 0,
+                requiredExp : 0,
                 money: 0,
                 difficulty: 0,
                 reputation: 0
             },
             statusBattle: '',
-            statusBattleText : ''
+            statusBattleText : '',
+            levelText: '',
+            hpText: '',
+            atkText: '',
+            defText: '',
+            expText: '',
+            moneyText: ''
         }
         this.preload = preload.bind(this);
 	}    
 
     create()
     {   
+        if(this.state.statusBattle === 'win') {
+            this.sound.play('victory')
+        } 
+        if(this.state.statusBattle === 'lose') {
+            this.sound.play('lose')
+        }
         let music = this.sound.play('nyan', {loop : true});
         //dungeonTileSet is from dungeon tile set image (PNG)
         //outdoorTileSet is from outdoor tile set image (PNG)
@@ -114,8 +127,12 @@ export default class Game extends Phaser.Scene
         wallsLayer.setCollisionByProperty({ collides: true }) // From Tiled application
         
         // Add Text for level
-        this.add.text(10,20 , `level : ${this.state.userStatus.level}`, '')
-
+        this.state.levelText = this.add.text(10,20 , `level : ${this.state.userStatus.level}`, '')
+        this.state.hpText = this.add.text(10,40 , `hp : ${this.state.userStatus.hp}`, '')
+        this.state.atkText = this.add.text(10,60 , `atk : ${this.state.userStatus.atk}`, '')
+        this.state.defText = this.add.text(10,80 , `def : ${this.state.userStatus.def}`, '')
+        this.state.expText = this.add.text(10,100 , `experience : ${this.state.userStatus.experience} / ${this.state.userStatus.requiredExp}`, '')
+        this.state.moneyText = this.add.text(10,120 , `money : ${this.state.userStatus.money}`, '')
         // Add Text status After Battle
         if(this.state.statusBattle) {
             this.state.statusBattleText = this.add.text(this.state.lastPosition.x - 35 ,this.state.lastPosition.y - 30, `You ${this.state.statusBattle}`)
@@ -228,7 +245,24 @@ export default class Game extends Phaser.Scene
     }
 
     update ()   
-    {
+    {   
+        // Updating Text position when player move
+        this.state.levelText.x =  this.state.faune.body.position.x - 380
+        this.state.levelText.y =  this.state.faune.body.position.y - 280
+        this.state.hpText.x =  this.state.faune.body.position.x - 380
+        this.state.hpText.y =  this.state.faune.body.position.y - 260
+        this.state.atkText.x =  this.state.faune.body.position.x - 380
+        this.state.atkText.y =  this.state.faune.body.position.y - 240
+        this.state.defText.x =  this.state.faune.body.position.x - 380
+        this.state.defText.y =  this.state.faune.body.position.y - 220
+        this.state.expText.x =  this.state.faune.body.position.x - 380
+        this.state.expText.y =  this.state.faune.body.position.y - 200
+        this.state.moneyText.x =  this.state.faune.body.position.x - 380
+        this.state.moneyText.y =  this.state.faune.body.position.y - 180
+        if(this.state.statusBattleText) {
+            this.state.statusBattleText.x = this.state.faune.body.position.x - 27
+            this.state.statusBattleText.y = this.state.faune.body.position.y - 30
+        }
         //destroy text status if win / lose
         if(this.state.statusBattleText) {
             setTimeout(() => {

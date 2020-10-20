@@ -4,6 +4,8 @@
 export default function preload() {
 
   this.load.audio('nyan', './audio/nyan.mp3')
+  this.load.audio('victory', './audio/victory.wav')
+  this.load.audio('lose', './audio/lose.wav')
   let my = this.state
   this.state.username = localStorage.getItem('username')   
   let stat = JSON.parse(localStorage.getItem('userStatus')) //getting data user
@@ -20,6 +22,7 @@ export default function preload() {
   my.userStatus.def = stat.def
   my.userStatus.experience = stat.collectedExp
   my.userStatus.money = stat.money
+  my.userStatus.requiredExp = stat.requiredExp
   my.userStatus.reputation = stat.reputation
   my.userStatus.difficulty = stat.currentDifficulty
   my.listMons = mons.monsters
