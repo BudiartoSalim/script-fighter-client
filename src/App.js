@@ -4,6 +4,7 @@ import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 import Login from './component/login'
 import GameScreen from './component/gamescreen'
 import BattleScene from './scenes/BattleScene'
+import LeaderboardScene from './scenes/Leaderboard'
 
 function App () {
 
@@ -14,10 +15,15 @@ function App () {
           <Login/>
         </Route>
         <Route exact path="/game">
-          <GameScreen/>
+          <div style={{margin: '0 auto'}}>
+            <GameScreen/>
+          </div>
         </Route>
         <Route exact path="/battle">
           <BattleScene/>
+        </Route>
+        <Route>
+          <LeaderboardScene/>
         </Route>
       </Switch>
     </Router>
