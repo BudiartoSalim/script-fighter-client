@@ -2,9 +2,7 @@ import React, {useState, useEffect} from 'react'
 import {useHistory} from 'react-router-dom'
 import axios from 'axios'
 import {
-  InputGroup,
   Form,
-  FormControl,
   Button,
   Alert
 } from 'react-bootstrap'

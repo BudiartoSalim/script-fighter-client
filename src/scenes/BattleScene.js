@@ -3,12 +3,12 @@ import {useHistory} from 'react-router-dom'
 import {
   Container,
   Row,
-  Col,
-  Table,
   ProgressBar,
   Button,
   Image,
-  Form
+  Form,
+  InputGroup,
+  FormControl
 } from 'react-bootstrap'
 import axios from 'axios'
 function BattleScene () {
@@ -202,23 +202,27 @@ function BattleScene () {
                 {/* Looping option here */}
                 <Form>
                 <Form.Check 
-                        type='checkbox'
-                        id={`default-checkbox`}
+                        type='radio'
+                        name="answer"
+                        id={`default-checkbox1`}
                         label={`The <footer>`}
                       />
                 <Form.Check 
-                        type='checkbox'
-                        id={`default-checkbox`}
+                        name="answer"
+                        type='radio'
+                        id={`default-checkbox2`}
                         label={`The <head> section`}
                       />
                 <Form.Check 
-                        type='checkbox'
-                        id={`default-checkbox`}
+                        name="answer"
+                        type='radio'
+                        id={`default-checkbox3`}
                         label={`The <body> section`}
                       />
                 <Form.Check 
-                        type='checkbox'
-                        id={`default-checkbox`}
+                        name="answer"
+                        type='radio'
+                        id={`default-checkbox4`}
                         label={`Both the <head> section and the <body> section are correct`}
                       />
                   <Button className="mt-3">
