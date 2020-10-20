@@ -14,7 +14,7 @@ function BattleScene () {
   const [countdown, setCountDown] = useState(20)
   const [isAnswer , setIsAnswer] = useState(false)
   const history = useHistory()
-  
+
   useEffect(() => {
     setCharacterStatus(JSON.parse(localStorage.getItem('userStatus')))
     setQuestion(JSON.parse(localStorage.getItem('question-now')))
@@ -178,7 +178,7 @@ function BattleScene () {
             { isAnswer &&
               <tr>
                 <td>
-                  Explanation ? <a href={question.explanation} target="_blank" rel="noopener noreferrer">  Click Here </a>
+                  Read the Docs ? <a href={question.explanation} target="_blank" rel="noopener noreferrer">  Click Here </a>
                 </td>
               </tr>
             }
