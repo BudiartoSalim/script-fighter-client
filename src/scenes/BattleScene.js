@@ -14,7 +14,7 @@ function BattleScene () {
   const [countdown, setCountDown] = useState(20)
   const [isAnswer , setIsAnswer] = useState(false)
   const history = useHistory()
-
+  
   useEffect(() => {
     setCharacterStatus(JSON.parse(localStorage.getItem('userStatus')))
     setQuestion(JSON.parse(localStorage.getItem('question-now')))
@@ -31,12 +31,20 @@ function BattleScene () {
     setCountDown(countdown - 0.1)
   }, 100)
 
-  useEffect(() => {
-    if(countdown <= 0) {
-      localStorage.setItem('statusbattle' , 'lose')
-      history.push('/game')
-    }
-  }, [countdown])
+  // useEffect(() => {
+  //   if(countdown <= 0) {
+  //     localStorage.setItem('statusbattle' , 'lose')
+  //     history.push('/game')
+  //   }
+  // }, [countdown])
+
+  function resetCountdown () {
+    setTimeout( () => {
+      setIsAnswer(false)
+    }, 2000)
+
+    setCountDown(time)
+  }
 
   function clickAnswer (e) {
 
@@ -55,55 +63,76 @@ function BattleScene () {
       .then(({data}) => {
         console.log(monster.experience, monster.money)
         if(data.answerResult) {
+          setHpMonster(hpMonster - (characterStatus.atk * 1.5 - (monster.def / 2)))
+          resetCountdown()
+          if((hpMonster - (characterStatus.atk * 1.5 - (monster.def / 2))) <= 0){
+            setHpMonster(0)
+            console.log('you win')
+          }
+          
+        //   localStorage.setItem('statusbattle' , 'win')
 
-          localStorage.setItem('statusbattle' , 'win')
+        //   return axios({
+        //     method: 'PUT',
+        //     url: 'http://localhost:3000/combat/experience',
+        //     headers: {
+        //       access_token: localStorage.getItem('access_token')
+        //     },
+        //     data: {
+        //       experience: monster.experience,
+        //       money: monster.money
+        //     }
+        //   })
+        //   .then(({data}) => {
 
-          return axios({
-            method: 'PUT',
-            url: 'http://localhost:3000/combat/experience',
-            headers: {
-              access_token: localStorage.getItem('access_token')
-            },
-            data: {
-              experience: monster.experience,
-              money: monster.money
-            }
-          })
-          .then(({data}) => {
+        //     localStorage.setItem('userStatus', JSON.stringify(data.status))
 
-            localStorage.setItem('userStatus', JSON.stringify(data.status))
+        //     let questionnow = JSON.parse(localStorage.getItem('question-now'))
+        //     let allMonster = JSON.parse(localStorage.getItem('monster'))
 
-            let questionnow = JSON.parse(localStorage.getItem('question-now'))
-            let allMonster = JSON.parse(localStorage.getItem('monster'))
-
-            let filtered = allMonster.questions.filter( quest => quest.id != questionnow.id)
-            localStorage.removeItem('question-now')
-            localStorage.removeItem('monster-now')
+        //     let filtered = allMonster.questions.filter( quest => quest.id != questionnow.id)
+        //     localStorage.removeItem('question-now')
+        //     localStorage.removeItem('monster-now')
             
-            if(filtered.length != 0){
-              localStorage.setItem('monster', JSON.stringify({...allMonster , questions: filtered}))
-              history.push('/game')
-            } else {
+        //     if(filtered.length != 0){
+        //       localStorage.setItem('monster', JSON.stringify({...allMonster , questions: filtered}))
+        //       setTimeout(() => {
+        //               history.push('/game')
+        //             }, 2000)
+        //     } else {
               
-                return axios ({
-                  method: 'GET',
-                  url: 'http://localhost:3000/monster',
-                  headers:{
-                    access_token : localStorage.getItem('access_token')
-                  }
-                })
-                  .then(({data}) => {
-                    localStorage.setItem('monster', JSON.stringify(data))
-                    history.push('/game')
-                  })
-            }
+        //         return axios ({
+        //           method: 'GET',
+        //           url: 'http://localhost:3000/monster',
+        //           headers:{
+        //             access_token : localStorage.getItem('access_token')
+        //           }
+        //         })
+        //           .then(({data}) => {
+        //             localStorage.setItem('monster', JSON.stringify(data))
+        //             setTimeout(() => {
+        //               history.push('/game')
+        //             }, 2000)
+        //           })
+        //     }
 
-          })
+        //   })
+        // } else {
+
+        //   localStorage.setItem('statusbattle' , 'lose')
+        //   setTimeout(() => {
+        //     history.push('/game')
+        //   }, 2000)
+
         } else {
 
-          localStorage.setItem('statusbattle' , 'lose')
-          history.push('/game')
-
+          setHpCharacter(hpCharacter - monster.atk - characterStatus.def)
+          // console.log(hpCharacter)
+          resetCountdown()
+          if((hpCharacter - monster.atk - characterStatus.def) <= 0) {
+            setHpCharacter(0)
+            console.log('lose')
+          }
         }
 
       })
@@ -116,10 +145,10 @@ function BattleScene () {
   return (
     <Container>
       <Row>
-        <Col sm={6} md={6} lg={6} xl={6} style={{backgroundColor:"red"}}>
+        <Col sm={6} md={6} lg={6} xl={6}>
           <Container>
             <Row>
-                <img src={monster.monster_image} alt={monster.monster_name}style={{width: "200px", height:"150px"}}/>
+                <img src={monster.monster_image} alt={monster.monster_name} style={{width: "200px", height:"150px"}}/>
             </Row>
             <Row>
               <Table striped bordered hover>
@@ -137,7 +166,7 @@ function BattleScene () {
             </Row>
           </Container>
         </Col>
-        <Col sm={6} md={6} lg={6} xl={6} style={{backgroundColor:"blue"}}>
+        <Col sm={6} md={6} lg={6} xl={6}>
         { question &&
           <Table>
             <tbody>
@@ -149,7 +178,7 @@ function BattleScene () {
             { isAnswer &&
               <tr>
                 <td>
-                  Explanation ? <a href={question.explanation} target="_blank">  Click Here </a>
+                  Explanation ? <a href={question.explanation} target="_blank" rel="noopener noreferrer">  Click Here </a>
                 </td>
               </tr>
             }
@@ -164,11 +193,11 @@ function BattleScene () {
         </Col>
       </Row>
       <Row>
-        <Col sm={6} md={6} lg={6} xl={6} style={{backgroundColor:"blue"}}>
+        <Col sm={6} md={6} lg={6} xl={6}>
           <Container>
             <Row>
               <Col sm={6} md={6} lg={6} xl={6}>
-                <img src="https://shockoe.com/wp-content/uploads/2020/06/img_5ee42878a59f3.png" style={{width:"200px", height:"200px"}}></img>
+                <img src="https://shockoe.com/wp-content/uploads/2020/06/img_5ee42878a59f3.png" alt="character" style={{width:"200px", height:"200px"}}></img>
               </Col>
               <Col sm={6} md={6} lg={6} xl={6}> 
                 <Table striped bordered hover>
@@ -187,33 +216,36 @@ function BattleScene () {
             </Row>
           </Container>
         </Col>
-          <Col sm={6} md={6} lg={6} xl={6} style={{backgroundColor:"red"}}>
+          <Col sm={6} md={6} lg={6} xl={6}>
             <Container>
             <Table>
-              <tbody>
-                <tr>
-                  { question.answer &&
-                    question.answer.split(',').map((ans , idx) => (
-                      idx < 2 ? 
-                      <td key={idx}>
-                      <Button  variant="primary" onClick={clickAnswer} value={ans}>{ans}</Button>
-                      </td> : null
-                    ))
-                  }
-                </tr>
-                <tr>
-                  {
-                    question.answer && question.answer.split(',').length > 2 &&
-                    question.answer.split(',').map((ans , idx) => (
-                      idx > 1 ?
-                      <td key={idx}>
-                        <Button key={idx} variant="primary" onClick={clickAnswer} value={ans}>{ans}</Button>
-                      </td> 
-                      : null
-                    ))
-                  }
-                </tr>
-              </tbody>
+              {
+                !isAnswer &&
+                <tbody>
+                  <tr>
+                    { question.answer &&
+                      question.answer.split(',').map((ans , idx) => (
+                        idx < 2 ? 
+                        <td key={idx}>
+                        <Button  variant="primary" onClick={clickAnswer} value={ans} disabled={isAnswer}>{ans}</Button>
+                        </td> : null
+                      ))
+                    }
+                  </tr>
+                  <tr>
+                    {
+                      question.answer && question.answer.split(',').length > 2 &&
+                      question.answer.split(',').map((ans , idx) => (
+                        idx > 1 ?
+                        <td key={idx}>
+                          <Button key={idx} variant="primary" onClick={clickAnswer} disabled={isAnswer} value={ans}>{ans}</Button>
+                        </td> 
+                        : null
+                      ))
+                    }
+                  </tr>
+                </tbody>
+              }
             </Table>
             </Container>
           </Col>
