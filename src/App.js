@@ -6,6 +6,7 @@ import GameScreen from './component/gamescreen'
 import BattleScene from './scenes/BattleScene'
 import LeaderboardScene from './scenes/Leaderboard'
 import ShopScene from './scenes/ShopScene'
+import Register from './component/Register'
 function App () {
 
   return (
@@ -27,6 +28,9 @@ function App () {
         </Route>
         <Route exact path="/shop">
           <ShopScene/>
+        </Route>
+        <Route exact path="/register">
+          <Register />
         </Route>
       </Switch>
     </Router>
