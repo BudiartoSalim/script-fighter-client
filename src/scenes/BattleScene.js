@@ -225,9 +225,14 @@ function BattleScene () {
                         id={`default-checkbox4`}
                         label={`Both the <head> section and the <body> section are correct`}
                       />
+                  <div id="battle-scene-buttons">
                   <Button className="mt-3">
                     Submit
                   </Button>
+                  <Button className="mt-3 btn btn-danger">
+                    Run Away!
+                  </Button>
+                  </div>
                 </Form>
               </div>
             </div>

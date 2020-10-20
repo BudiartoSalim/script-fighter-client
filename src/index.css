@@ -63,6 +63,11 @@ body {
   flex-direction: column;
 }
 
+#battle-scene-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
 .mt-60 {
   margin-top: 60%;
 }
