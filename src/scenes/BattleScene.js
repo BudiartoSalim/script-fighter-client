@@ -221,6 +221,9 @@ function BattleScene () {
                         id={`default-checkbox`}
                         label={`Both the <head> section and the <body> section are correct`}
                       />
+                  <Button className="mt-3">
+                    Submit
+                  </Button>
                 </Form>
               </div>
             </div>
