@@ -26,6 +26,8 @@ export default function preload() {
   
   localStorage.removeItem('x')
   localStorage.removeItem('y')
+  localStorage.removeItem('monster-now')
+  localStorage.removeItem('question')
   localStorage.removeItem('statusbattle')
   
   this.load.image('tiles', '/tiles/dungeon_tiles.png')

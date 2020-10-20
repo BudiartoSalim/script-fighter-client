@@ -22,7 +22,7 @@ function App () {
         <Route exact path="/battle">
           <BattleScene/>
         </Route>
-        <Route>
+        <Route exact path="/battle">
           <LeaderboardScene/>
         </Route>
       </Switch>
