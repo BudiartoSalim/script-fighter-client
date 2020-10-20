@@ -19,6 +19,9 @@ function App () {
         <Route exact path="/battle">
           <BattleScene/>
         </Route>
+        <Route exact path="/register">
+          <BattleScene/>
+        </Route>
       </Switch>
     </Router>
   )
