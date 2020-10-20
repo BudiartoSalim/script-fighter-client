@@ -25,7 +25,7 @@ function Register() {
   function onChangeText(event) {
     let {name, value} = event.target
     setRegisterForm({
-      ...registerForm, [name] value
+      ...registerForm, [name] : value
     })
   }
   function submitRegister(event) {
@@ -54,7 +54,7 @@ function Register() {
             <div className="title center mt-60">
                 <h1>Script Fighter Register</h1>
             </div>
-            <Form onSubmit={(event) => submitted(event)} className="login-form">
+            <Form onSubmit={(event) => submitRegister(event)} className="login-form">
               <Form.Group controlId="formBasicEmail">
                 <Form.Label>Email address</Form.Label>
                 <Form.Control
