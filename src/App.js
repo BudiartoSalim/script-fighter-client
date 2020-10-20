@@ -4,7 +4,8 @@ import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 import Login from './component/login'
 import GameScreen from './component/gamescreen'
 import BattleScene from './scenes/BattleScene'
-
+import LeaderboardScene from './scenes/Leaderboard'
+import ShopScene from './scenes/ShopScene'
 function App () {
 
   return (
@@ -14,10 +15,18 @@ function App () {
           <Login/>
         </Route>
         <Route exact path="/game">
-          <GameScreen/>
+          <div style={{margin: '0 auto'}}>
+            <GameScreen/>
+          </div>
         </Route>
         <Route exact path="/battle">
           <BattleScene/>
+        </Route>
+        <Route exact path="/leaderboard">
+          <LeaderboardScene/>
+        </Route>
+        <Route exact path="/shop">
+          <ShopScene/>
         </Route>
       </Switch>
     </Router>

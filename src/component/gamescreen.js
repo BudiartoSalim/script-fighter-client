@@ -24,7 +24,7 @@ function GameScreen() {
   const { initialize, game } = state
 
   return (
-     <IonPhaser game={game} initialize={initialize} />
+      <IonPhaser game={game} initialize={initialize}  />
   )
 }
 

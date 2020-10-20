@@ -23,7 +23,7 @@ function BattleScene () {
   const [countdown, setCountDown] = useState(20)
   const [isAnswer , setIsAnswer] = useState(false)
   const history = useHistory()
-  
+
   useEffect(() => {
     setCharacterStatus(JSON.parse(localStorage.getItem('userStatus')))
     setQuestion(JSON.parse(localStorage.getItem('question-now')))
