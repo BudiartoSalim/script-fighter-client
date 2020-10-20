@@ -71,11 +71,9 @@ export default class Game extends Phaser.Scene
         this.state.faune.body.setSize(15,20)
 
         // Looping monster as much as question length
-        for(let i = 0 ; i < 10 ; i++){
-
+        for(let i = 0 ; i < this.state.question.length ; i++){
             let x = Math.floor(Math.random() * 500) + 10
             let y = Math.floor(Math.random() * 500)
-            
             let randMonster = Math.floor(Math.random() * this.state.listMons.length)
             this.state.mons[this.state.listMons[randMonster].id] = this.physics.add.staticSprite(x , y , 'brown-monster', 'moving-object/brown-monster.png') 
             
