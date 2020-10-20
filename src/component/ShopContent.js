@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Container, Row, Col, Table, ProgressBar, Button, Card } from 'react-bootstrap';
 import axios from 'axios';
 
 export default function ShopContent(props) {
+  const [error, setError] = useState(false);
 
   async function buyItem() {
     try {
@@ -11,13 +12,13 @@ export default function ShopContent(props) {
         url: `http://localhost:3000/shop/${props.item.id}`
       })
       if (data.userStatus) {
+        setError(false);
         localStorage.setItem('userStatus', data.userStatus);
       } else {
-        //else fail to purchase (money not enough etc)
-
+        setError(data.message);
       }
     } catch (err) {
-
+      setError(err.response);
     }
   }
 
@@ -100,6 +101,13 @@ export default function ShopContent(props) {
               )
             }
           </Row>
+          {error && (
+            <>
+              <Card.Text>
+                {error}
+              </Card.Text>
+            </>
+          )}
           <Button variant="primary">Buy!</Button>
         </Card.Body>
       </Card>
