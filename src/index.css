@@ -11,6 +11,7 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+@font-face { font-family: 'pixel'; src: url('./assets/font/PixelBit-Free.ttf'); } 
 
 #background {
   height: 100vh;
@@ -41,7 +42,7 @@ code {
 }
 
 .title{
-  font-family: 'Staatliches', cursive;
+  font-family: 'pixel';
   width: 100%;
   text-align: center;
 }
