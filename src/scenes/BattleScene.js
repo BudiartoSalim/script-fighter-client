@@ -40,11 +40,13 @@ function BattleScene () {
   useEffect(() => {
     console.log(intervalRunning)
     let interval 
-    if(intervalRunning) {
-      interval = setInterval(() => {   
-        console.log('timeout invoked')
-        setCountDown(countdown => countdown - 0.1)
-      }, 100)
+    if(intervalRunning && countdown === time) {
+      setTimeout(() => {
+        interval = setInterval(() => {   
+          console.log('timeout invoked')
+            setCountDown(countdown => countdown - 0.1)
+        }, 100)
+      }, 1000)
     } else {
       clearInterval(interval)
       resetCountdown()
@@ -114,10 +116,10 @@ function BattleScene () {
 
   useEffect(() => {
     
-    if(countdown < 0) {
-      setIdxQuestion(idxQuestion + 1)
-      setHpCharacter(hpCharacter - 30)
-      resetCountdown()
+    if(countdown <= -0.5) {
+        setIdxQuestion(idxQuestion + 1)
+        setHpCharacter(hpCharacter - 30)
+        resetCountdown()
     }
 
   }, [countdown])
@@ -156,8 +158,9 @@ function BattleScene () {
           } else {
             setHpCharacter(hpCharacter - 30)
           }
-          
-          resetCountdown()
+
+            resetCountdown()
+
         })
         .catch(err => {
           console.log(err)
@@ -195,7 +198,7 @@ function BattleScene () {
               <h5>Player Status</h5>
               <div style={{fontFamily: 'dogica'}}>
                 <p>Player Name: {username.toUpperCase()} </p>
-                <ProgressBar variant="danger" now={ hpCharacter / characterStatus.hp * 100} label="HP" />
+                <ProgressBar variant="danger" now={ hpCharacter / characterStatus.hp * 100} label="HP" style={{transition: 'none !important'}}/>
                 <p>Atk: {characterStatus.atk} </p>
                 <p>Def: {characterStatus.def}</p>
               </div>
