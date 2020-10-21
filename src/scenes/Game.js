@@ -18,7 +18,7 @@ export default class Game extends Phaser.Scene
             username: '',
             lastPosition: {
                 x: 220,
-                y: 670
+                y: 1400
             },
             coordinate: [{x: 670, y:150 },{x:350 , y: 230 },{x:100 , y:300 },{x: 200 , y:150 },{x:120 , y:500 },{x: 420 , y:100 },{x: 250, y: 400 },{x: 450 , y: 330},{x: 630 , y: 350 },{x: 700 , y: 410}],
             userStatus: {
