@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Container, Row, Col, Table, ProgressBar, Button, Card } from 'react-bootstrap';
+import { Row, Col, Button, Card } from 'react-bootstrap';
 import axios from 'axios';
 
 export default function ShopContent(props) {
