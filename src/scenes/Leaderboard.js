@@ -41,10 +41,11 @@ function LeaderboardScene () {
       <Container fluid>
         <h1 style={{textAlign: 'center'}}>Leaderboard</h1>
         <Button variant="danger" onClick={BackToGame} style={{float:'right', marginBottom: '20px'}}>Exit</Button>
-        <Table  borderless variant="dark">
+        <Table  borderless variant="dark" style={{width: '80%', clear:'both', margin: '0 auto'}} striped >
           <thead>
             <tr>
               <th>Rank</th>
+              <th>Username</th>
               <th>Point</th>
             </tr>
           </thead>
@@ -57,7 +58,6 @@ function LeaderboardScene () {
           </tbody>
         </Table>
       </Container>
-
       }
     </div>
   )

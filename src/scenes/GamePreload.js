@@ -58,7 +58,7 @@ export default function preload() {
       console.log('progress kepanggil')
       progress.clear();
       progress.fillStyle(0xffffff, 1);
-      progress.fillRect(0, 150, 800 * value, 60);
+      progress.fillRect(0, 270, 800 * value, 60);
       
   });
   

@@ -25,7 +25,7 @@ function BattleScene () {
   const time = 20
   const [countdown, setCountDown] = useState(time)
   const [submittedAnswer, setSubmittedAnswer] = useState('')
-  const [ intervalRunning, setIntervalRunning] = useState(true)
+  const [intervalRunning, setIntervalRunning] = useState(true)
   const history = useHistory()
 
   useEffect(() => {
@@ -169,7 +169,6 @@ function BattleScene () {
   }
   
   return (
-
     <Container fluid style={{fontFamily: 'dogicabold'}} className="mt-3">
         <Row>
           <div id="battle-scene-left" className="border border-dark col-sm-3">
