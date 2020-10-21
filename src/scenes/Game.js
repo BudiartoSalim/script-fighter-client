@@ -210,9 +210,6 @@ export default class Game extends Phaser.Scene
         let tree4 = this.add.sprite(222,678, 'tree')
         let tree5 = this.add.sprite(93,722, 'tree')
         let tree6 = this.add.sprite(93,820, 'tree')
-        
-        
-       
 
         // Creating Animation for Tree
         this.anims.create({
@@ -340,7 +337,10 @@ export default class Game extends Phaser.Scene
 
         // adding collider for wall and character (can't walk through wall)
         this.physics.add.collider(this.state.faune, wallsLayer)
-        this.physics.add.collider(this.state.faune, wallBuildingsLayer)
+        this.physics.add.collider(this.state.faune, wallBuildingsLayer, () => {
+            localStorage.clear()
+            window.location.href = '/'
+        })
         this.physics.add.collider(this.state.faune, treesLayer)
 
         // adding keyboard input

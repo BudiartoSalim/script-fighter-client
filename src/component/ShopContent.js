@@ -53,7 +53,7 @@ export default function ShopContent(props) {
               </Card.Text>
             </Col>
             <Col sm={7} md={7} lg={7} xl={7}>
-              <Card.Text style={{fontS}}>
+              <Card.Text style={{fontFamily: 'dogica'}}>
                 :{props.item.price}
               </Card.Text>
             </Col>
