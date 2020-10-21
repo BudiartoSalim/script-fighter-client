@@ -6,7 +6,8 @@ function LeaderboardRow (props) {
    console.log(props)
   return (
     <tr>
-        <td>Rank {idx + 1} - User : {user.User.username.toUpperCase()}</td>
+        <td style={{width:'30px'}}>{idx + 1}</td>
+        <td>{user.User.username.toUpperCase()}</td>
         <td>{user.collectedExp}</td>
     </tr>
   )

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Container, Row, Col, Table, ProgressBar, Button, Card } from 'react-bootstrap';
+import { Row, Col, Button, Card } from 'react-bootstrap';
 import axios from 'axios';
 
 export default function ShopContent(props) {
@@ -38,7 +38,7 @@ export default function ShopContent(props) {
 
   return (
     <>
-      <Card>
+      <Card bg="dark" style={{ marginBottom: '10px'}}>
         <Card.Body>
           <Card.Title>
             {props.item.item_name}

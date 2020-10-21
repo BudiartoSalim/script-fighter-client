@@ -6,16 +6,16 @@ import {
   ProgressBar,
   Button,
   Image,
-  Form,
-  InputGroup,
-  FormControl
+  Form
 } from 'react-bootstrap'
 import axios from 'axios'
+import CombatResult from '../component/CombatResult'
 
 function BattleScene () {
 
   const [question, setQuestion] = useState([])
   const [questionNow , setQuestionNow] = useState({})
+  const [questionAnswer, setQuestionAnswer] = useState([])
   const [idxQuestion, setIdxQuestion] = useState(0)
   const [monster, setMonster] = useState({ })
   const [hpMonster, setHpMonster] = useState(0)
@@ -25,9 +25,10 @@ function BattleScene () {
   const time = 20
   const [countdown, setCountDown] = useState(time)
   const [submittedAnswer, setSubmittedAnswer] = useState('')
-  const [ intervalRunning, setIntervalRunning] = useState(true)
+  const [intervalRunning, setIntervalRunning] = useState(true)
+  const [combatResult , setCombatResult] = useState('')
   const history = useHistory()
-
+  
   useEffect(() => {
 
     setCharacterStatus(JSON.parse(localStorage.getItem('userStatus')))
@@ -67,17 +68,28 @@ function BattleScene () {
   }, [monster, characterStatus])
 
   useEffect(() => {
-    
-    let idx = idxQuestion
-    if(idxQuestion >= question.length){
-      idx = Math.floor(Math.random() * question.length)
-    }
+    let idx = Math.floor(Math.random() * question.length)
 
     setQuestionNow({
       ...question[idx]
     })
 
+    if(hpMonster > 0 || hpCharacter > 0) {
+
+      if(question[idx]){
+        
+        let filtered = questionAnswer.filter(quest => quest.id === question[idx].id)
+
+        if(filtered.length === 0){
+          setQuestionAnswer([...questionAnswer, question[idx]])
+        }
+
+      }
+      
+    }
+
   }, [question, idxQuestion])
+
 
   useEffect(() => {
     if(hpMonster && hpMonster <= 0) {
@@ -97,7 +109,7 @@ function BattleScene () {
       })
       .then(({data}) => {
         localStorage.setItem('userStatus', JSON.stringify(data.status))
-        history.push('/game')
+        setCombatResult('Win!')
       })
       .catch(err => {
         console.log(err)
@@ -110,7 +122,7 @@ function BattleScene () {
     if(hpCharacter && hpCharacter <= 0) {
       setHpCharacter(0)
       localStorage.setItem('statusbattle' , 'lose')
-      history.push('/game')
+      setCombatResult('Lose!')
     }
 
   }, [hpCharacter])
@@ -169,8 +181,14 @@ function BattleScene () {
   }
   
   return (
-
-    <Container style={{fontFamily: 'dogicabold'}} className="mt-3">
+    <>
+    {
+      combatResult && 
+      <CombatResult combatResult={combatResult} questions={questionAnswer}></CombatResult>
+    }
+    {
+      !combatResult &&
+        <Container fluid style={{fontFamily: 'dogicabold'}} className="mt-3">
         <Row>
           <div id="battle-scene-left" className="border border-dark col-sm-3">
           <Image
@@ -198,7 +216,7 @@ function BattleScene () {
           <div id="battle-scene-center" className="border border-dark col-sm-6 p-3">
             <div id="time-box">
               <h5>Time</h5>
-              <ProgressBar variant="success" now={countdown / time * 100}/>
+              <ProgressBar variant="primary" now={countdown / time * 100}/>
             </div>
             {
               question && 
@@ -254,13 +272,16 @@ function BattleScene () {
           </h5>
           <div style={{fontFamily: 'dogica'}}>
           <p>{username.toUpperCase()}</p>
-          <ProgressBar variant="danger" now={ hpCharacter / characterStatus.hp * 100} label="HP" style={{transition: 'none !important'}}/>
+          <ProgressBar variant="success" now={ hpCharacter / characterStatus.hp * 100} label="HP" style={{transition: 'none !important'}}/>
           <p>Atk: {characterStatus.atk} </p>
           <p>Def: {characterStatus.def}</p>
           </div>
           </div>
         </Row>
-    </Container>
+      </Container>
+    }
+     
+    </>
   )
 }
 

@@ -3,6 +3,7 @@ import { Container, Row, Col , Button, Form} from 'react-bootstrap';
 import {useHistory} from 'react-router-dom'
 import axios from 'axios';
 import ShopContent from '../component/ShopContent';
+import LoadingDisplay from '../component/LoadingDisplay.js';
 
 export default function ShopScene() {
   
@@ -13,7 +14,7 @@ export default function ShopScene() {
   const [purchaseStatus, setPurchaseStatus] = useState('')
   const [buyCount, setBuyCount] = useState(0)
   const history = useHistory()
-
+  
   //on page load, fetch item list based on current player stats
   useEffect(() => {
     setUserStatus(JSON.parse(localStorage.getItem('userStatus')))
@@ -52,13 +53,13 @@ export default function ShopScene() {
 
   return (
     <>
-      <Container style={{ marginTop: '5%'}} className="f-dogicabold">
+      <Container fluid className="f-dogicabold bg-black">
         <Row style={{alignContent: 'center'}}>
           <div style={{ width: '100%', textAlign: 'center'}}>
             <h1>
               Shop
             </h1> 
-            <Button onClick={BackToGame} variant={'danger'} style={{marginLeft: '85%'}}>Exit</Button>
+            <Button onClick={BackToGame} variant={'danger'} style={{float: 'right'}}>Exit</Button>
           </div>
           <div>
             {
@@ -80,7 +81,7 @@ export default function ShopScene() {
         <Row >
           { loadingStatus && (
             <>
-              <h1>Loading shop...</h1>
+              <LoadingDisplay />
             </>
           )
           }
