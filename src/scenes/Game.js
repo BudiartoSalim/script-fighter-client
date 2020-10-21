@@ -63,23 +63,25 @@ export default class Game extends Phaser.Scene
         let outdoor2 = this.make.tilemap({ key: 'grass-env'})
         let street = this.make.tilemap({ key: 'street-env'})
         let buildings = this.make.tilemap({ key: 'buildings-env'})
+        let signBoard = this.make.tilemap({ key: 'sign-board-env'})
 
         let dungeonTileSet = dungeon.addTilesetImage('dungeon', 'tiles')//  "tiles" is from the IMAGE dungeon tiles in preload
         let outdoorTileSet = outdoor.addTilesetImage('nature-env', 'outdoor-tiles')
         let outdoorTileSet2 = outdoor2.addTilesetImage('grass-env', 'grass-tiles')
         let streetTileSet = street.addTilesetImage('street-env', 'street-tiles')
         let buildingsTileSet = buildings.addTilesetImage('buildings-env', 'buildings-tiles')
+        let signBoardTileset = signBoard.addTilesetImage('sign-board-env', 'sign-board-tiles')
 
         // Creating Layer for Environment First Create is the Lowest Part
         outdoor.createStaticLayer('Grass', outdoorTileSet)
         outdoor2.createStaticLayer('Grass', outdoorTileSet2)
         dungeon.createStaticLayer('Ground', dungeonTileSet)
-        let steppedLayer = dungeon.createStaticLayer('Carpet', dungeonTileSet)
+        // let steppedLayer = dungeon.createStaticLayer('Carpet', dungeonTileSet)
         dungeon.createStaticLayer('Dungeon-Properties', dungeonTileSet)
         outdoor.createStaticLayer('Ground', outdoorTileSet)
         street.createStaticLayer('Street', streetTileSet)
         outdoor.createStaticLayer('Properties', outdoorTileSet)
-        buildings.createStaticLayer('Buildings', buildingsTileSet)
+        // buildings.createStaticLayer('Buildings', buildingsTileSet)
         
 
 
@@ -95,13 +97,16 @@ export default class Game extends Phaser.Scene
         let wallsLayer = dungeon.createStaticLayer('Walls', dungeonTileSet)
         let wallBuildingsLayer = outdoor.createStaticLayer('Buildings', buildingsTileSet)
         let shopBuildingsLayer = buildings.createStaticLayer('Shop', buildingsTileSet)
-
+        let signBoardLayer = signBoard.createStaticLayer('Sign-board', signBoardTileset)
+        
+        let treesLayer = dungeon.createStaticLayer('Properties', outdoorTileSet)
+        
         //creating physics character
         this.state.faune = this.physics.add.sprite(this.state.lastPosition.x,this.state.lastPosition.y, 'faune', 'sprites/walk-down/walk-down-3.png')
         //set hitbox physics for character
         this.state.faune.body.setSize(15,20)   
-
-        let treesLayer = dungeon.createStaticLayer('Properties', outdoorTileSet)
+        
+        
     
          //adding camera movement (follow)
         
@@ -152,6 +157,17 @@ export default class Game extends Phaser.Scene
             window.location.href = '/shop'
         })
 
+        this.physics.add.collider(this.state.faune, signBoardLayer, () => {
+
+            // Save All Question & Battle Monster
+            // Save Last Position User and Last Position Monster
+            localStorage.setItem('x', this.state.faune.body.center.x)
+            localStorage.setItem('y', this.state.faune.body.center.y)
+            
+            // Change page into /battle
+            window.location.href = '/leaderboard'
+        })
+
 
 
         // this.physics.add.overlap(this.state.faune, steppedLayer, () => {
@@ -171,7 +187,7 @@ export default class Game extends Phaser.Scene
         wallBuildingsLayer.setCollisionByProperty({ collides: true }) 
         treesLayer.setCollisionByProperty({ collides: true }) 
         shopBuildingsLayer.setCollisionByProperty({ shop: true }) 
-        
+        signBoardLayer.setCollisionByProperty({collides: true})
         
        
         // Add Text status After Battle

@@ -33,6 +33,7 @@ function BattleScene () {
   //starting use effect set character , question , monster, username
   useEffect(() => {
     battleSound.play()
+    battleSound.volume = 0.1
     setCharacterStatus(JSON.parse(localStorage.getItem('userStatus')))
     setQuestion(JSON.parse(localStorage.getItem('question')))
     setMonster(JSON.parse(localStorage.getItem('monster-now')))
@@ -132,7 +133,7 @@ function BattleScene () {
       }
 
         setIdxQuestion(idxQuestion + 1)
-        setHpCharacter(hpCharacter - ((monster.atk * 2) / characterStatus.def))
+        setHpCharacter(hpCharacter - Math.ceil((monster.atk * 2) / characterStatus.def))
         resetCountdown()
 
     }

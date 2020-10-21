@@ -42,12 +42,14 @@ export default function preload() {
   this.load.image('grass-tiles', '/tiles/grass.png')
   this.load.image('street-tiles', '/tiles/grass-style-2.png')
   this.load.image('buildings-tiles', '/tiles/buildings.png')
+  this.load.image('sign-board-tiles', '/tiles/sign-board.png')
 
   this.load.tilemapTiledJSON('dungeon', '/tiles/dungeon-02.json')
   this.load.tilemapTiledJSON('nature-env', '/tiles/dungeon-02.json')
   this.load.tilemapTiledJSON('grass-env', '/tiles/dungeon-02.json')
   this.load.tilemapTiledJSON('street-env', '/tiles/dungeon-02.json')
   this.load.tilemapTiledJSON('buildings-env', '/tiles/dungeon-02.json')
+  this.load.tilemapTiledJSON('sign-board-env', '/tiles/dungeon-02.json')
 
   this.load.atlas('faune', '/character/faune.png', '/character/faune.json')
   this.load.spritesheet('tree','/moving-object/tree-top.png', {frameWidth : 100, frameHeight: 74})
