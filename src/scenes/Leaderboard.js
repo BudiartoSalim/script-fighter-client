@@ -4,13 +4,26 @@ import { Container, Table, Button } from 'react-bootstrap'
 import axios from 'axios'
 import LeaderboardRow from '../component/leaderboard-tablerow'
 import LoadingDisplay from '../component/LoadingDisplay.js';
+import leaderboardSound from '../assets/audio/leaderboard.mp3'
+
 function LeaderboardScene () {
 
   const [users , setUsers] = useState([])
   const [loading, setLoading] = useState(false)
   const history = useHistory()
 
+  const audio = new Audio(leaderboardSound)
+
+  function playAudio () {
+    audio.play()
+  }
+
+  function pauseAudio() {
+    audio.pause()
+  }
+
   useEffect( () => {
+    playAudio()
     setLoading(true)
     axios({
       method: 'GET',
@@ -24,6 +37,11 @@ function LeaderboardScene () {
     .catch(err => {
       console.log()
     })
+
+    return () => {
+      pauseAudio()
+    }
+
   }, [])
 
   function BackToGame() {
@@ -31,7 +49,12 @@ function LeaderboardScene () {
   }
 
   return (
+    <>
+     <audio autoPlay>
+        <source src="./assets/audio/leaderboard.mp3" type="audio/mpeg"/>
+    </audio>
     <div id="leaderboard-page" className="f-dogicabold bg-black">
+      
       {
         loading &&
         <LoadingDisplay/>
@@ -60,6 +83,7 @@ function LeaderboardScene () {
       </div>
       }
     </div>
+    </>
   )
 }
 
