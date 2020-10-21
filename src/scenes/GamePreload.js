@@ -35,6 +35,8 @@ export default function preload() {
   localStorage.removeItem('question')
   localStorage.removeItem('statusbattle')
   
+  this.load.image('scroll', '/icon/scroll_3.png')
+  this.load.image('board', '/icon/board.jpg')
   this.load.image('tiles', '/tiles/dungeon_tiles.png')
   this.load.image('outdoor-tiles', '/tiles/nature-env.png')
   this.load.tilemapTiledJSON('dungeon', '/tiles/dungeon-02.json')

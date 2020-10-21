@@ -44,7 +44,6 @@ function BattleScene () {
     if(intervalRunning && countdown === time) {
       timeout = setTimeout(() => {
         interval = setInterval(() => {   
-          console.log('check')
             setCountDown(countdown => countdown - 0.1)
         }, 100)
       }, 1000)
