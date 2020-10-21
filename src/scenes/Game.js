@@ -54,7 +54,7 @@ export default class Game extends Phaser.Scene
         if(this.state.statusBattle === 'lose') {
             this.sound.play('lose')
         }
-        let music = this.sound.play('nyan', {loop : true});
+        let music = this.sound.play('nyan', {loop : true, volume: 0.5});
         //dungeonTileSet is from dungeon tile set image (PNG)
         //outdoorTileSet is from outdoor tile set image (PNG)
         //outdoor2TileSet is from outdoor tile set image (PNG)
@@ -74,12 +74,13 @@ export default class Game extends Phaser.Scene
         outdoor.createStaticLayer('Grass', outdoorTileSet)
         outdoor2.createStaticLayer('Grass', outdoorTileSet2)
         dungeon.createStaticLayer('Ground', dungeonTileSet)
+        let steppedLayer = dungeon.createStaticLayer('Carpet', dungeonTileSet)
         dungeon.createStaticLayer('Dungeon-Properties', dungeonTileSet)
         outdoor.createStaticLayer('Ground', outdoorTileSet)
         street.createStaticLayer('Street', streetTileSet)
         outdoor.createStaticLayer('Properties', outdoorTileSet)
         buildings.createStaticLayer('Buildings', buildingsTileSet)
-
+        
 
 
         //creating animation monster
@@ -90,10 +91,17 @@ export default class Game extends Phaser.Scene
             frameRate: 14
         })
 
+        // Creating Collision for environment
+        let wallsLayer = dungeon.createStaticLayer('Walls', dungeonTileSet)
+        let wallBuildingsLayer = outdoor.createStaticLayer('Buildings', buildingsTileSet)
+        let shopBuildingsLayer = buildings.createStaticLayer('Shop', buildingsTileSet)
+
         //creating physics character
         this.state.faune = this.physics.add.sprite(this.state.lastPosition.x,this.state.lastPosition.y, 'faune', 'sprites/walk-down/walk-down-3.png')
         //set hitbox physics for character
         this.state.faune.body.setSize(15,20)
+
+        let treesLayer = dungeon.createStaticLayer('Properties', outdoorTileSet)
 
          //adding camera movement (follow)
         this.cameras.main.startFollow(this.state.faune, true)
@@ -129,24 +137,39 @@ export default class Game extends Phaser.Scene
                     // Destroy Monster Body
                     this.state.mons[this.state.listMons[randMonster].id].disableBody(true,true)
                 })
-            }
-           
+            }   
         }
+        
+        this.physics.add.collider(this.state.faune, shopBuildingsLayer, () => {
+
+            // Save All Question & Battle Monster
+            // Save Last Position User and Last Position Monster
+            localStorage.setItem('x', this.state.faune.body.center.x)
+            localStorage.setItem('y', this.state.faune.body.center.y)
+            
+            // Change page into /battle
+            window.location.href = '/shop'
+        })
+
+
+
+        // this.physics.add.overlap(this.state.faune, steppedLayer, () => {
+        //     steppedLayer.disableBody(true, true)
+        //     console.log('keinjek')
+        // })
+
         
         // Creating Roof Layer
         dungeon.createStaticLayer('Roof', dungeonTileSet)
         outdoor.createStaticLayer('Roof-Buildings', buildingsTileSet)
 
 
-        // Creating Collision for environment
-        let wallsLayer = dungeon.createStaticLayer('Walls', dungeonTileSet)
-        let treesLayer = dungeon.createStaticLayer('Properties', outdoorTileSet)
-        let wallBuildingsLayer = outdoor.createStaticLayer('Buildings', buildingsTileSet)
-
         // Setting Collission for Walls
         wallsLayer.setCollisionByProperty({ collides: true }) // From Tiled application
-        wallBuildingsLayer.setCollisionByProperty({ collides: true }) // From Tiled application
-        treesLayer.setCollisionByProperty({ collides: true }) // From Tiled application
+        // steppedLayer.setCollisionByProperty({ stepped: true })
+        wallBuildingsLayer.setCollisionByProperty({ collides: true }) 
+        treesLayer.setCollisionByProperty({ collides: true }) 
+        shopBuildingsLayer.setCollisionByProperty({ shop: true }) 
         
         
        
@@ -167,11 +190,10 @@ export default class Game extends Phaser.Scene
         let tree1 = this.add.sprite(93,614, 'tree')
         let tree2 = this.add.sprite(205,582, 'tree')
         let tree3 = this.add.sprite(222,786, 'tree')
-        let tree4 = this.add.sprite(206,918, 'tree')
-        // let tree5 = this.add.sprite(205,724, 'tree')
-        // let tree6 = this.add.sprite(241,582, 'tree')
+        let tree4 = this.add.sprite(222,678, 'tree')
+        let tree5 = this.add.sprite(93,722, 'tree')
+        let tree6 = this.add.sprite(93,820, 'tree')
         
-        // let scroll = this.add.image(10,10, 'scroll')
         this.state.board = this.add.image(10,70, 'board')
         this.state.board.alpha = 0.5
         // Add Text for level
@@ -220,6 +242,41 @@ export default class Game extends Phaser.Scene
             frameRate: 10
         })
 
+        
+        //Create Fountain Sprite
+        let redFountain1 = this.add.sprite(343,265, 'fountain')
+        let redFountain2 = this.add.sprite(375,265, 'fountain')
+        let redFountain3 = this.add.sprite(407,265, 'fountain')
+
+        let blueFountain1 = this.add.sprite(487,265, 'fountain')
+        let blueFountain2 = this.add.sprite(519,265, 'fountain')
+        let blueFountain3 = this.add.sprite(551,265, 'fountain')
+
+
+          // Creating Animation for Fountain
+            this.anims.create({
+                key:'redFountainAnims',
+                frames: this.anims.generateFrameNumbers( 'fountain', {start: 3, end: 5}),
+                repeat: -1,
+                frameRate: 10
+            })
+
+        this.anims.create({
+            key:'blueFountainAnims',
+            frames: this.anims.generateFrameNumbers( 'fountain', {start: 0, end: 2}),
+            repeat: -1,
+            frameRate: 10
+            })
+
+        redFountain1.anims.play('redFountainAnims')
+        redFountain2.anims.play('redFountainAnims')
+        redFountain3.anims.play('redFountainAnims')
+
+        blueFountain1.anims.play('blueFountainAnims')
+        blueFountain2.anims.play('blueFountainAnims')
+        blueFountain3.anims.play('blueFountainAnims')
+
+
         // Creating monster character
         // this.state.monster.brown = this.physics.add.staticSprite(x , y , 'brown-monster', 'moving-object/brown-monster.png') 
         // Set Size of Hitbox for Monster Character
@@ -232,8 +289,8 @@ export default class Game extends Phaser.Scene
         tree2.anims.play('treeanims')
         tree3.anims.play('treeanims')
         tree4.anims.play('treeanims')
-        // tree5.anims.play('treeanims')
-        // tree6.anims.play('treeanims')
+        tree5.anims.play('treeanims')
+        tree6.anims.play('treeanims')
 
         //creating animation and set key for using the animation (Idle Animation)
         this.anims.create({
@@ -318,7 +375,8 @@ export default class Game extends Phaser.Scene
     }
 
     update ()   
-    {   
+    {  
+
         // Updating Text position when player move
         this.state.board.x = this.state.faune.body.position.x - 235
         this.state.board.y = this.state.faune.body.position.y - 95

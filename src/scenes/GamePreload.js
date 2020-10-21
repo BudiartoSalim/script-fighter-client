@@ -52,6 +52,7 @@ export default function preload() {
   this.load.atlas('faune', '/character/faune.png', '/character/faune.json')
   this.load.spritesheet('tree','/moving-object/tree-top.png', {frameWidth : 100, frameHeight: 74})
   this.load.spritesheet('brown-monster','/moving-object/brown-monster.png', {frameWidth : 32, frameHeight: 35})
+  this.load.spritesheet('fountain','/moving-object/fountains.png', {frameWidth : 16, frameHeight: 16})
   var progress = this.add.graphics();
                 
   this.load.on('progress', function (value) {
