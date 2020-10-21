@@ -3,6 +3,7 @@ import { Container, Row, Col , Button, Form} from 'react-bootstrap';
 import {useHistory} from 'react-router-dom'
 import axios from 'axios';
 import ShopContent from '../component/ShopContent';
+import LoadingDisplay from '../component/LoadingDisplay.js';
 
 export default function ShopScene() {
   
@@ -80,7 +81,7 @@ export default function ShopScene() {
         <Row >
           { loadingStatus && (
             <>
-              <h1>Loading shop...</h1>
+              <LoadingDisplay />
             </>
           )
           }
