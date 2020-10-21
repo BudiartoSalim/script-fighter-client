@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react'
 import {useHistory} from 'react-router-dom'
-import axios from 'axios'
 import {
   Form,
   Button,
   Alert
 } from 'react-bootstrap'
+import ScriptFighterAPI from '../API/ScriptFighterAPI'
+
 function Login () {
 
   const [loginForm , setLoginForm] = useState({
@@ -20,6 +21,13 @@ function Login () {
     let access_token = localStorage.getItem('access_token')
     if(access_token) {
       history.push('/game')
+    }
+
+    let registerStat = localStorage.getItem('login')
+    
+    if(registerStat) {
+      setErrForm(registerStat)
+      localStorage.removeItem('login')
     }
 
   }, [])
@@ -41,9 +49,9 @@ function Login () {
 
   function submitted(event) {
     event.preventDefault()
-    axios({
+    ScriptFighterAPI({
       method: 'POST',
-      url: 'http://localhost:3000/login',
+      url: '/login',
       data: {
         email : loginForm.email,
         password : loginForm.password
@@ -54,9 +62,9 @@ function Login () {
         localStorage.setItem('access_token', data.access_token)
         localStorage.setItem('username', data.username)
         
-        return axios ({
+        return ScriptFighterAPI({
           method: 'GET',
-          url: 'http://localhost:3000/monster',
+          url: '/monster',
           headers:{
             access_token : data.access_token
           }
@@ -69,6 +77,10 @@ function Login () {
       .catch(err => {
         setErrForm(err.response.data.message)
       })
+  }
+
+  function Register () {
+    history.push('/register')
   }
 
   return (
@@ -104,6 +116,9 @@ function Login () {
                 </Form.Group>
                 <Button variant="secondary" type="submit">
                   Start
+                </Button>
+                <Button variant="secondary" style={{marginTop: '10px'}} onClick={Register}>
+                  Register
                 </Button>
               </Form>
           </div>

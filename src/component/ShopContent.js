@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { Row, Col, Button, Card } from 'react-bootstrap';
-import axios from 'axios';
+import ScriptFighterAPI from '../API/ScriptFighterAPI'
 
 export default function ShopContent(props) {
   const [userStatus, setUserStatus] = useState({})
@@ -13,7 +13,7 @@ export default function ShopContent(props) {
 
   async function buyItem() {
     try {
-      const { data } = await axios({
+      const { data } = await ScriptFighterAPI({
         method: 'PUT',
         url: `http://localhost:3000/shop/${props.item.id}`,
         headers: {
