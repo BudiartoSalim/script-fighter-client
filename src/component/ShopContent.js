@@ -3,8 +3,13 @@ import { Container, Row, Col, Table, ProgressBar, Button, Card } from 'react-boo
 import axios from 'axios';
 
 export default function ShopContent(props) {
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [userStatus, setUserStatus] = useState({})
+
+  useEffect(() => {
+
+    setUserStatus(JSON.parse(localStorage.getItem('userStatus')))
+
+  }, [])
 
   async function buyItem() {
     try {
@@ -17,24 +22,19 @@ export default function ShopContent(props) {
       })
       
       if (data.userStatus) {
-        setSuccess('Successful Buying Item')
+        console.log(data.userStatus)
+        props.setPurchaseStatus('success')
         localStorage.setItem('userStatus', JSON.stringify(data.userStatus));
+        props.setStatUser(data.userStatus)
+        setUserStatus(data.userStatus)
+        props.setBuyCount(props.buyCount + 1)
       } else {
-        setError(data.message);
+        props.setPurchaseStatus(data.message)
       }
     } catch (err) {
-      setError(err.response.data.message);
+      props.setPurchaseStatus(err.response.data.message)
     }
   }
-
-  useEffect(() => {
-    
-    setTimeout(() => {
-      setError('')
-      setSuccess('')
-    }, 2000)
-
-  }, [error, success])
 
   return (
     <>
@@ -42,16 +42,6 @@ export default function ShopContent(props) {
         <Card.Body>
           <Card.Title>
             {props.item.item_name}
-            <div style={{height: "50px"}}>
-            {
-              success &&
-              <h3 style={{fontSize: '24px', color: 'green'}}>{success}</h3>
-            }
-            {
-              error &&
-              <h3 style={{fontSize: '24px', color: 'red'}}>{error}</h3>
-            }
-            </div>
           </Card.Title>
           <Card.Text>
             {props.item.description}
@@ -116,7 +106,7 @@ export default function ShopContent(props) {
               )
             }
             {
-              props.item.difficulty > 0 && (
+              props.item.difficulty > userStatus.maxDifficulty && (
                 <>
                   <Col>
                     <Card.Text>
