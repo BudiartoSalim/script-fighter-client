@@ -69,7 +69,7 @@ function Login () {
               <div className="title center mt-60">
               <h1 className="badge-light">Script Fighter
                 <h3 className="badge-warning">Login</h3>
-                </h1>
+              </h1>
               </div>
               <Form onSubmit={(event) => submitted(event)} className="login-form">
                 <Form.Group controlId="formBasicEmail">
