@@ -28,10 +28,14 @@ function BattleScene () {
   const [intervalRunning, setIntervalRunning] = useState(true)
   const [combatResult , setCombatResult] = useState('')
   const history = useHistory()
-
+  
   const battleSound = new Audio(BattleSound)
   //starting use effect set character , question , monster, username
   useEffect(() => {
+    let access_token = localStorage.getItem('access_token')
+    if(!access_token) {
+      history.push('/')
+    }
     battleSound.play()
     battleSound.volume = 0.1
     setCharacterStatus(JSON.parse(localStorage.getItem('userStatus')))

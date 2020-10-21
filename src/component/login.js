@@ -14,7 +14,16 @@ function Login () {
   })
   const [errForm, setErrForm] = useState('')
   const history = useHistory()
-  
+
+  useEffect(() => {
+    
+    let access_token = localStorage.getItem('access_token')
+    if(access_token) {
+      history.push('/game')
+    }
+
+  }, [])
+
   useEffect(() => {
     setTimeout(() => {
       setErrForm('')

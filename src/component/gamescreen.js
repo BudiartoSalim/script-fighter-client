@@ -1,11 +1,14 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import Phaser from 'phaser'
+import {useHistory} from 'react-router-dom'
 import { IonPhaser } from '@ion-phaser/react'
 import Game from '../scenes/Game' 
 import { Container } from 'react-bootstrap'
 
 function GameScreen() {
-
+  const history = useHistory()
+  const [play , setPlay] = useState(false) 
+  
   const [ state ] = useState({
     initialize: true,
     game: {
@@ -25,14 +28,28 @@ function GameScreen() {
     }
   })
 
+  useEffect(() => {
+    
+    let access_token = localStorage.getItem('access_token')
+    if(!access_token) {
+      history.push('/')
+    } else {
+      setPlay(true)
+    }
+
+  }, [])
   const { initialize, game } = state
 
   return (
-    <div style={{backgroundColor: 'black', height: '100vh'}}>
-      <Container>
-        <IonPhaser game={game} initialize={initialize}  />
-      </Container>
-    </div>
+    <>
+    {play && 
+      <div style={{backgroundColor: 'black', height: '100vh'}}>
+        <Container>
+          <IonPhaser game={game} initialize={initialize}  />
+        </Container>
+      </div>
+    }
+    </>
   )
 }
 

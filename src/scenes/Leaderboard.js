@@ -14,6 +14,15 @@ function LeaderboardScene () {
 
   const audio = new Audio(leaderboardSound)
 
+  useEffect(() => {
+    
+    let access_token = localStorage.getItem('access_token')
+    if(!access_token) {
+      history.push('/')
+    }
+
+  }, [])
+
   function playAudio () {
     audio.play()
   }
