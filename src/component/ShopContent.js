@@ -49,12 +49,12 @@ export default function ShopContent(props) {
           <Row>
             <Col sm={5} md={5} lg={5} xl={5}>
               <Card.Text>
-                Price:
+                Price
               </Card.Text>
             </Col>
             <Col sm={7} md={7} lg={7} xl={7}>
               <Card.Text>
-                {props.item.price}
+                :{props.item.price}
               </Card.Text>
             </Col>
             {
@@ -62,12 +62,12 @@ export default function ShopContent(props) {
                 <>
                   <Col sm={5} md={5} lg={5} xl={5}>
                     <Card.Text>
-                      Hp:
+                      Hp
                   </Card.Text>
                   </Col>
                   <Col sm={7} md={7} lg={7} xl={7}>
                     <Card.Text>
-                      +{props.item.hp}
+                      :+{props.item.hp}
                     </Card.Text>
                   </Col>
                 </>
@@ -78,12 +78,12 @@ export default function ShopContent(props) {
                 <>
                   <Col sm={5} md={5} lg={5} xl={5}>
                     <Card.Text>
-                      Atk:
+                      Atk
                   </Card.Text>
                   </Col>
                   <Col sm={7} md={7} lg={7} xl={7}>
                     <Card.Text>
-                      +{props.item.atk}
+                      :+{props.item.atk}
                     </Card.Text>
                   </Col>
                 </>
@@ -94,12 +94,12 @@ export default function ShopContent(props) {
                 <>
                   <Col sm={5} md={5} lg={5} xl={5}>
                     <Card.Text>
-                      Def:
+                      Def
                   </Card.Text>
                   </Col>
                   <Col sm={7} md={7} lg={7} xl={7}>
                     <Card.Text>
-                      +{props.item.def}
+                      :+{props.item.def}
                     </Card.Text>
                   </Col>
                 </>

@@ -39,7 +39,8 @@ export default class Game extends Phaser.Scene
             atkText: '',
             defText: '',
             expText: '',
-            moneyText: ''
+            moneyText: '',
+            board: ''
         }
         this.preload = preload.bind(this);
 	}    
@@ -126,6 +127,8 @@ export default class Game extends Phaser.Scene
         // Setting Collission for Walls
         wallsLayer.setCollisionByProperty({ collides: true }) // From Tiled application
         
+        // let scroll = this.add.image(10,10, 'scroll')
+        this.state.board = this.add.image(10,70, 'board')
         // Add Text for level
         this.state.levelText = this.add.text(10,20 , `level : ${this.state.userStatus.level}`, '')
         this.state.hpText = this.add.text(10,40 , `hp : ${this.state.userStatus.hp}`, '')
@@ -133,6 +136,18 @@ export default class Game extends Phaser.Scene
         this.state.defText = this.add.text(10,80 , `def : ${this.state.userStatus.def}`, '')
         this.state.expText = this.add.text(10,100 , `experience : ${this.state.userStatus.experience} / ${this.state.userStatus.requiredExp}`, '')
         this.state.moneyText = this.add.text(10,120 , `money : ${this.state.userStatus.money}`, '')
+        this.state.levelText.setColor('black')
+        this.state.levelText.setStroke('', 1)
+        this.state.hpText.setColor('black')
+        this.state.hpText.setStroke('', 1)
+        this.state.atkText.setColor('black')
+        this.state.atkText.setStroke('', 1)
+        this.state.defText.setColor('black')
+        this.state.defText.setStroke('', 1)
+        this.state.expText.setColor('black')
+        this.state.expText.setStroke('', 1)
+        this.state.moneyText.setColor('black')
+        this.state.moneyText.setStroke('', 1)
         // Add Text status After Battle
         if(this.state.statusBattle) {
             this.state.statusBattleText = this.add.text(this.state.lastPosition.x - 35 ,this.state.lastPosition.y - 30, `You ${this.state.statusBattle}`)
@@ -247,6 +262,8 @@ export default class Game extends Phaser.Scene
     update ()   
     {   
         // Updating Text position when player move
+        this.state.board.x = this.state.faune.body.position.x - 260
+        this.state.board.y = this.state.faune.body.position.y - 220
         this.state.levelText.x =  this.state.faune.body.position.x - 380
         this.state.levelText.y =  this.state.faune.body.position.y - 280
         this.state.hpText.x =  this.state.faune.body.position.x - 380
