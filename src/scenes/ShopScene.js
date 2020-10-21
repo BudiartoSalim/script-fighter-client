@@ -53,13 +53,13 @@ export default function ShopScene() {
 
   return (
     <>
-      <Container style={{ marginTop: '5%'}} className="f-dogicabold">
+      <Container fluid className="f-dogicabold bg-black">
         <Row style={{alignContent: 'center'}}>
           <div style={{ width: '100%', textAlign: 'center'}}>
             <h1>
               Shop
             </h1> 
-            <Button onClick={BackToGame} variant={'danger'} style={{marginLeft: '85%'}}>Exit</Button>
+            <Button onClick={BackToGame} variant={'danger'} style={{float: 'right'}}>Exit</Button>
           </div>
           <div>
             {

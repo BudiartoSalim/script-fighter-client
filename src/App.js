@@ -10,6 +10,7 @@ import Register from './component/Register'
 function App () {
 
   return (
+    <div>
     <Router>
       <Switch>
         <Route exact path="/">
@@ -32,6 +33,7 @@ function App () {
         </Route>
       </Switch>
     </Router>
+    </div>
   )
 }
 
