@@ -1,6 +1,5 @@
 import React, {useEffect} from 'react'
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
-import {useHistory} from 'react-router-dom'
 import Login from './component/login'
 import GameScreen from './component/gamescreen'
 import BattleScene from './scenes/BattleScene'
