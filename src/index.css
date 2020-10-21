@@ -1,0 +1,129 @@
+@font-face { 
+  font-family: 'dogica'; src: url('./assets/font/dogica.ttf'); 
+} 
+
+@font-face { 
+  font-family: 'dogicabold'; src: url('./assets/font/dogicabold.ttf'); 
+}
+
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: black !important;
+  color: white !important;
+}
+
+/* code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+} */
+
+
+.f-dogicabold {
+  font-family: 'dogicabold';
+}
+
+#background {
+  height: 100vh;
+  background-image: url('./assets/dungeon-image.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding-top: 80px !important;
+}
+
+.login-box {
+  font-family: 'dogicabold';
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px;
+  height: 400px;
+  background-color: rgba(255,255,255, 0.5)
+}
+
+.register-box {
+  font-family: 'dogicabold';
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px;
+  height: 500px;
+  background-color: rgba(255,255,255, 0.5)
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  width: 400px;
+}
+
+#monster-card {
+  display: flex;
+  background-color: burlywood;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#battle-scene-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#question-box {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+}
+
+.upper-body-shopScene {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+#battle-scene-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.mt-60 {
+  margin-top: 60%;
+}
+
+.center {
+  margin: 0 auto;
+}
+
+.ml-45 {
+  margin-left: 45%;
+}
+
+.title{
+  width: 100%;
+  text-align: center;
+}
+
+
+.bg-white-op-75 {
+  width: 35%;
+  background-color: rgba(255,255,255, 30);
+}
+
+.w-200 {
+  height: 30px;
+}
+
+.white {
+  color: white;
+}
