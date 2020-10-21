@@ -4,6 +4,7 @@ import {useHistory} from 'react-router-dom'
 import axios from 'axios';
 import ShopContent from '../component/ShopContent';
 import LoadingDisplay from '../component/LoadingDisplay.js';
+import ShopSound from '../assets/audio/shop.mp3'
 
 export default function ShopScene() {
   
@@ -15,6 +16,16 @@ export default function ShopScene() {
   const [buyCount, setBuyCount] = useState(0)
   const history = useHistory()
   
+  const shopSound = new Audio(ShopSound)
+  //adding audio
+  useEffect(() => {
+    shopSound.play()
+
+    return () => {
+      shopSound.pause()
+    }
+  }, [])
+
   //on page load, fetch item list based on current player stats
   useEffect(() => {
     setUserStatus(JSON.parse(localStorage.getItem('userStatus')))
