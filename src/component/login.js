@@ -2,9 +2,7 @@ import React, {useState, useEffect} from 'react'
 import {useHistory} from 'react-router-dom'
 import axios from 'axios'
 import {
-  InputGroup,
   Form,
-  FormControl,
   Button,
   Alert
 } from 'react-bootstrap'
@@ -69,7 +67,9 @@ function Login () {
       <div id="background">
         <div className="login-box p-3">
               <div className="title center mt-60">
-                  <h1>Script Fighter</h1>
+              <h1 className="badge-light">Script Fighter
+                <h3 className="badge-warning">Login</h3>
+                </h1>
               </div>
               <Form onSubmit={(event) => submitted(event)} className="login-form">
                 <Form.Group controlId="formBasicEmail">

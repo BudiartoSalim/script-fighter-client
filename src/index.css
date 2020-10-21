@@ -52,7 +52,7 @@ body {
   background-color: burlywood;
 }
 
-#battle-scene-right {
+#battle-scene-center {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -61,6 +61,8 @@ body {
 #question-box {
   display: flex;
   flex-direction: column;
+  height: 100%;
+
 }
 
 #battle-scene-buttons {

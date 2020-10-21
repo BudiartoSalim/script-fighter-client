@@ -17,8 +17,8 @@ export default class Game extends Phaser.Scene
             mons: {},
             username: '',
             lastPosition: {
-                x: 100,
-                y: 100
+                x: 220,
+                y: 670
             },
             coordinate: [{x: 670, y:150 },{x:350 , y: 230 },{x:100 , y:300 },{x: 200 , y:150 },{x:120 , y:500 },{x: 420 , y:100 },{x: 250, y: 400 },{x: 450 , y: 330},{x: 630 , y: 350 },{x: 700 , y: 410}],
             userStatus: {
@@ -39,19 +39,33 @@ export default class Game extends Phaser.Scene
 
     create()
     {   
+        let music = this.sound.play('nyan', {loop : true});
         //dungeonTileSet is from dungeon tile set image (PNG)
         //outdoorTileSet is from outdoor tile set image (PNG)
+        //outdoor2TileSet is from outdoor tile set image (PNG)
         let dungeon = this.make.tilemap({ key: 'dungeon'}) //"dungeon" is from dungeon JSON file that we load
         let outdoor = this.make.tilemap({ key: 'nature-env'})
-        let dungeonTileSet = dungeon.addTilesetImage('dungeon', 'tiles')//  "tiles" is from the IMAGE dungeon tiles  
+        let outdoor2 = this.make.tilemap({ key: 'grass-env'})
+        let street = this.make.tilemap({ key: 'street-env'})
+        let buildings = this.make.tilemap({ key: 'buildings-env'})
+
+        let dungeonTileSet = dungeon.addTilesetImage('dungeon', 'tiles')//  "tiles" is from the IMAGE dungeon tiles in preload
         let outdoorTileSet = outdoor.addTilesetImage('nature-env', 'outdoor-tiles')
+        let outdoorTileSet2 = outdoor2.addTilesetImage('grass-env', 'grass-tiles')
+        let streetTileSet = street.addTilesetImage('street-env', 'street-tiles')
+        let buildingsTileSet = buildings.addTilesetImage('buildings-env', 'buildings-tiles')
 
         // Creating Layer for Environment First Create is the Lowest Part
+        outdoor.createStaticLayer('Grass', outdoorTileSet)
+        outdoor2.createStaticLayer('Grass', outdoorTileSet2)
         dungeon.createStaticLayer('Ground', dungeonTileSet)
         dungeon.createStaticLayer('Dungeon-Properties', dungeonTileSet)
         outdoor.createStaticLayer('Ground', outdoorTileSet)
-        outdoor.createStaticLayer('More-Grass', outdoorTileSet)
+        street.createStaticLayer('Street', streetTileSet)
         outdoor.createStaticLayer('Properties', outdoorTileSet)
+        buildings.createStaticLayer('Buildings', buildingsTileSet)
+
+
 
         //creating animation monster
         this.anims.create({
@@ -65,6 +79,9 @@ export default class Game extends Phaser.Scene
         this.state.faune = this.physics.add.sprite(this.state.lastPosition.x,this.state.lastPosition.y, 'faune', 'sprites/walk-down/walk-down-3.png')
         //set hitbox physics for character
         this.state.faune.body.setSize(15,20)
+
+         //adding camera movement (follow)
+        this.cameras.main.startFollow(this.state.faune, true)
 
         // Initiate monster as much as Coordinate length
         for(let i = 0 ; i < this.state.coordinate.length ; i++){
@@ -103,14 +120,21 @@ export default class Game extends Phaser.Scene
         
         // Creating Roof Layer
         dungeon.createStaticLayer('Roof', dungeonTileSet)
+        outdoor.createStaticLayer('Roof-Buildings', buildingsTileSet)
 
-        // Creating Walls for environment
+
+        // Creating Collision for environment
         let wallsLayer = dungeon.createStaticLayer('Walls', dungeonTileSet)
+        let treesLayer = dungeon.createStaticLayer('Properties', outdoorTileSet)
+        let wallBuildingsLayer = outdoor.createStaticLayer('Buildings', buildingsTileSet)
+
         // Setting Collission for Walls
         wallsLayer.setCollisionByProperty({ collides: true }) // From Tiled application
+        wallBuildingsLayer.setCollisionByProperty({ collides: true }) // From Tiled application
+        treesLayer.setCollisionByProperty({ collides: true }) // From Tiled application
         
         // Add Text for level
-        this.add.text(0,0 , `level : ${this.state.userStatus.level}`)
+        this.add.text(10,20 , `level : ${this.state.userStatus.level}`, '')
 
         // Add Text status After Battle
         if(this.state.statusBattle) {
@@ -128,6 +152,10 @@ export default class Game extends Phaser.Scene
         // Create Tree Object
         let tree1 = this.add.sprite(93,614, 'tree')
         let tree2 = this.add.sprite(205,582, 'tree')
+        let tree3 = this.add.sprite(222,786, 'tree')
+        let tree4 = this.add.sprite(206,918, 'tree')
+        // let tree5 = this.add.sprite(205,724, 'tree')
+        // let tree6 = this.add.sprite(241,582, 'tree')
         
         // Creating Animation for Tree
         this.anims.create({
@@ -147,6 +175,10 @@ export default class Game extends Phaser.Scene
         // Playing animation for tree
         tree1.anims.play('treeanims')
         tree2.anims.play('treeanims')
+        tree3.anims.play('treeanims')
+        tree4.anims.play('treeanims')
+        // tree5.anims.play('treeanims')
+        // tree6.anims.play('treeanims')
 
         //creating animation and set key for using the animation (Idle Animation)
         this.anims.create({
@@ -215,6 +247,8 @@ export default class Game extends Phaser.Scene
 
         // adding collider for wall and character (can't walk through wall)
         this.physics.add.collider(this.state.faune, wallsLayer)
+        this.physics.add.collider(this.state.faune, wallBuildingsLayer)
+        this.physics.add.collider(this.state.faune, treesLayer)
 
         // adding keyboard input
         this.state.cursors = this.input.keyboard.addKeys(
@@ -236,8 +270,8 @@ export default class Game extends Phaser.Scene
                 this.state.statusBattleText.destroy()
             }, 1000)
         }
-        let run = 100
-        let walk = 50
+        let run = 150
+        let walk = 100
 
         if (this.state.cursors.left.isDown && this.state.cursors.run.isDown ) {
             this.state.faune.setVelocityX(-run);

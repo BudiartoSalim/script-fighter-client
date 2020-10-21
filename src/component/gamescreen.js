@@ -8,16 +8,19 @@ function GameScreen() {
   const [ state ] = useState({
     initialize: true,
     game: {
-      width: 800,
-      height: 600,
+      width: 600, // 600
+      height: 300,// 300
       type: Phaser.AUTO,
       physics: {
         default: 'arcade',
         arcade: {
-          debug: true
+          debug: false
         }
     },
-      scene: [Game]
+      scene: [Game],
+      scale: {
+        zoom: 2
+      }
     }
   })
 

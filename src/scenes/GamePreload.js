@@ -2,6 +2,8 @@
 
 
 export default function preload() {
+
+  this.load.audio('nyan', './audio/nyan.mp3')
   let my = this.state
   this.state.username = localStorage.getItem('username')   
   let stat = JSON.parse(localStorage.getItem('userStatus')) //getting data user
@@ -32,8 +34,16 @@ export default function preload() {
   
   this.load.image('tiles', '/tiles/dungeon_tiles.png')
   this.load.image('outdoor-tiles', '/tiles/nature-env.png')
+  this.load.image('grass-tiles', '/tiles/grass.png')
+  this.load.image('street-tiles', '/tiles/grass-style-2.png')
+  this.load.image('buildings-tiles', '/tiles/buildings.png')
+
   this.load.tilemapTiledJSON('dungeon', '/tiles/dungeon-02.json')
   this.load.tilemapTiledJSON('nature-env', '/tiles/dungeon-02.json')
+  this.load.tilemapTiledJSON('grass-env', '/tiles/dungeon-02.json')
+  this.load.tilemapTiledJSON('street-env', '/tiles/dungeon-02.json')
+  this.load.tilemapTiledJSON('buildings-env', '/tiles/dungeon-02.json')
+
   this.load.atlas('faune', '/character/faune.png', '/character/faune.json')
   this.load.spritesheet('tree','/moving-object/tree-top.png', {frameWidth : 100, frameHeight: 74})
   this.load.spritesheet('brown-monster','/moving-object/brown-monster.png', {frameWidth : 32, frameHeight: 35})
