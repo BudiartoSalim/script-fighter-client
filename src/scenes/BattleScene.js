@@ -22,7 +22,7 @@ function BattleScene () {
   const [hpCharacter, setHpCharacter] = useState(0)
   const [characterStatus , setCharacterStatus] = useState({})
   const [username, setUsername] = useState('')
-  const time = 3
+  const time = 10
   const [countdown, setCountDown] = useState(time)
   const [submittedAnswer, setSubmittedAnswer] = useState('')
   const [intervalRunning, setIntervalRunning] = useState(true)
@@ -176,9 +176,9 @@ function BattleScene () {
           setIdxQuestion(idxQuestion + 1)
           
           if(data.answerResult) {
-            setHpMonster(hpMonster - 20)
+            setHpMonster(hpMonster - Math.ceil((characterStatus.atk * 2) / monster.def))
           } else {
-            setHpCharacter(hpCharacter - 300)
+            setHpCharacter(hpCharacter - Math.ceil((monster.atk * 2) / monster.atk))
           }
 
             resetCountdown()
