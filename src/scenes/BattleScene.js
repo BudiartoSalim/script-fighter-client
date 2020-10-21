@@ -68,10 +68,7 @@ function BattleScene () {
 
   useEffect(() => {
     
-    let idx = idxQuestion
-    if(idxQuestion >= question.length){
-      idx = Math.floor(Math.random() * question.length)
-    }
+    let idx = Math.floor(Math.random() * question.length)
 
     setQuestionNow({
       ...question[idx]
