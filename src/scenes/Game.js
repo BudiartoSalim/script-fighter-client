@@ -97,6 +97,7 @@ export default class Game extends Phaser.Scene
         let wallsLayer = dungeon.createStaticLayer('Walls', dungeonTileSet)
         let wallBuildingsLayer = outdoor.createStaticLayer('Buildings', buildingsTileSet)
         let shopBuildingsLayer = buildings.createStaticLayer('Shop', buildingsTileSet)
+        let logoutBuildingsLayer = buildings.createStaticLayer('Logout', buildingsTileSet)
         let signBoardLayer = signBoard.createStaticLayer('Sign-board', signBoardTileset)
         
         let treesLayer = dungeon.createStaticLayer('Properties', outdoorTileSet)
@@ -188,7 +189,7 @@ export default class Game extends Phaser.Scene
         treesLayer.setCollisionByProperty({ collides: true }) 
         shopBuildingsLayer.setCollisionByProperty({ shop: true }) 
         signBoardLayer.setCollisionByProperty({collides: true})
-        
+        logoutBuildingsLayer.setCollisionByProperty({logout: true})
        
         // Add Text status After Battle
         if(this.state.statusBattle) {
@@ -196,12 +197,22 @@ export default class Game extends Phaser.Scene
         }
 
         // To See Hitbox for walls
-        // let debugGraphics = this.add.graphics().setAlpha(0.75)
-        // wallsLayer.renderDebug(debugGraphics, {
-        //     tileColor: null,
-        //     collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
-        //     faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
-        //     });
+        let debugGraphics = this.add.graphics().setAlpha(0.75)
+        wallsLayer.renderDebug(debugGraphics, {
+            tileColor: null,
+            collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
+            faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
+            });
+            logoutBuildingsLayer.renderDebug(debugGraphics, {
+                tileColor: null,
+                collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
+                faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
+                });
+                            wallBuildingsLayer.renderDebug(debugGraphics, {
+                tileColor: null,
+                collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
+                faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
+                });
 
         // Create Tree Object
         let tree1 = this.add.sprite(93,614, 'tree')
@@ -337,7 +348,8 @@ export default class Game extends Phaser.Scene
 
         // adding collider for wall and character (can't walk through wall)
         this.physics.add.collider(this.state.faune, wallsLayer)
-        this.physics.add.collider(this.state.faune, wallBuildingsLayer, () => {
+        this.physics.add.collider(this.state.faune, wallBuildingsLayer)
+        this.physics.add.collider(this.state.faune, logoutBuildingsLayer, () => {
             localStorage.clear()
             window.location.href = '/'
         })

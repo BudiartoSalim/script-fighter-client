@@ -128,8 +128,7 @@ function BattleScene () {
   //check countdown
   useEffect(() => {
     
-    if(countdown <= -0.5) {
-      
+    if(countdown <= -0.5) {      
       if(hpMonster > 0 && hpCharacter > 0) {
         let filter = questionAnswer.filter(el => el.id === questionNow.id)
         if(filter.length === 0 ){
