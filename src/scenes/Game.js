@@ -40,6 +40,7 @@ export default class Game extends Phaser.Scene
             defText: '',
             expText: '',
             moneyText: '',
+            difficultyText: '',
             board: ''
         }
         this.preload = preload.bind(this);
@@ -147,27 +148,8 @@ export default class Game extends Phaser.Scene
         wallBuildingsLayer.setCollisionByProperty({ collides: true }) // From Tiled application
         treesLayer.setCollisionByProperty({ collides: true }) // From Tiled application
         
-        // let scroll = this.add.image(10,10, 'scroll')
-        this.state.board = this.add.image(10,70, 'board')
-        // Add Text for level
-        this.state.levelText = this.add.text(10,20 , `level : ${this.state.userStatus.level}`, '')
-        this.state.hpText = this.add.text(10,40 , `hp : ${this.state.userStatus.hp}`, '')
-        this.state.atkText = this.add.text(10,60 , `atk : ${this.state.userStatus.atk}`, '')
-        this.state.defText = this.add.text(10,80 , `def : ${this.state.userStatus.def}`, '')
-        this.state.expText = this.add.text(10,100 , `experience : ${this.state.userStatus.experience} / ${this.state.userStatus.requiredExp}`, '')
-        this.state.moneyText = this.add.text(10,120 , `money : ${this.state.userStatus.money}`, '')
-        this.state.levelText.setColor('black')
-        this.state.levelText.setStroke('', 1)
-        this.state.hpText.setColor('black')
-        this.state.hpText.setStroke('', 1)
-        this.state.atkText.setColor('black')
-        this.state.atkText.setStroke('', 1)
-        this.state.defText.setColor('black')
-        this.state.defText.setStroke('', 1)
-        this.state.expText.setColor('black')
-        this.state.expText.setStroke('', 1)
-        this.state.moneyText.setColor('black')
-        this.state.moneyText.setStroke('', 1)
+        
+       
         // Add Text status After Battle
         if(this.state.statusBattle) {
             this.state.statusBattleText = this.add.text(this.state.lastPosition.x - 35 ,this.state.lastPosition.y - 30, `You ${this.state.statusBattle}`)
@@ -189,6 +171,47 @@ export default class Game extends Phaser.Scene
         // let tree5 = this.add.sprite(205,724, 'tree')
         // let tree6 = this.add.sprite(241,582, 'tree')
         
+        // let scroll = this.add.image(10,10, 'scroll')
+        this.state.board = this.add.image(10,70, 'board')
+        this.state.board.alpha = 0.7
+        // Add Text for level
+        let diff
+        switch (this.state.userStatus.difficulty) {
+            case 0:
+                diff = 'easy'
+                break;
+            case 1:
+                diff = 'normal'
+                break;
+            case 2:
+                diff = 'hard'
+                break;
+            default:
+                diff = 'easy'
+                break;
+        }
+        this.state.levelText = this.add.text(10,20 , `level : ${this.state.userStatus.level}`, {font: "10px"})
+        this.state.hpText = this.add.text(10,40 , `hp : ${this.state.userStatus.hp}`, {font: "10px"})
+        this.state.atkText = this.add.text(10,60 , `atk : ${this.state.userStatus.atk}`, {font: "10px"})
+        this.state.defText = this.add.text(10,80 , `def : ${this.state.userStatus.def}`, {font: "10px"})
+        this.state.expText = this.add.text(10,100 , `experience : ${this.state.userStatus.experience} / ${this.state.userStatus.requiredExp}`, {font: "10px"})
+        this.state.moneyText = this.add.text(10,120 , `money : ${this.state.userStatus.money}`, {font: "10px"})
+        this.state.difficultyText = this.add.text(10,130 , `difficulty : ${diff}`, {font: "10px"})
+        this.state.levelText.setColor('black')
+        this.state.levelText.setStroke('', 1)
+        this.state.hpText.setColor('black')
+        this.state.hpText.setStroke('', 1)
+        this.state.atkText.setColor('black')
+        this.state.atkText.setStroke('', 1)
+        this.state.defText.setColor('black')
+        this.state.defText.setStroke('', 1)
+        this.state.expText.setColor('black')
+        this.state.expText.setStroke('', 1)
+        this.state.moneyText.setColor('black')
+        this.state.moneyText.setStroke('', 1)
+        this.state.difficultyText.setColor('black')
+        this.state.difficultyText.setStroke('', 1)
+
         // Creating Animation for Tree
         this.anims.create({
             key:'treeanims',
@@ -297,20 +320,22 @@ export default class Game extends Phaser.Scene
     update ()   
     {   
         // Updating Text position when player move
-        this.state.board.x = this.state.faune.body.position.x - 320
-        this.state.board.y = this.state.faune.body.position.y - 220
-        this.state.levelText.x =  this.state.faune.body.position.x - 440
-        this.state.levelText.y =  this.state.faune.body.position.y - 280
-        this.state.hpText.x =  this.state.faune.body.position.x - 440
-        this.state.hpText.y =  this.state.faune.body.position.y - 260
-        this.state.atkText.x =  this.state.faune.body.position.x - 440
-        this.state.atkText.y =  this.state.faune.body.position.y - 240
-        this.state.defText.x =  this.state.faune.body.position.x - 440
-        this.state.defText.y =  this.state.faune.body.position.y - 220
-        this.state.expText.x =  this.state.faune.body.position.x - 440
-        this.state.expText.y =  this.state.faune.body.position.y - 200
-        this.state.moneyText.x =  this.state.faune.body.position.x - 440
-        this.state.moneyText.y =  this.state.faune.body.position.y - 180
+        this.state.board.x = this.state.faune.body.position.x - 240
+        this.state.board.y = this.state.faune.body.position.y - 100
+        this.state.levelText.x =  this.state.faune.body.position.x - 285
+        this.state.levelText.y =  this.state.faune.body.position.y - 135
+        this.state.hpText.x =  this.state.faune.body.position.x - 285
+        this.state.hpText.y =  this.state.faune.body.position.y - 120
+        this.state.atkText.x =  this.state.faune.body.position.x - 285
+        this.state.atkText.y =  this.state.faune.body.position.y - 105
+        this.state.defText.x =  this.state.faune.body.position.x - 285
+        this.state.defText.y =  this.state.faune.body.position.y - 90
+        this.state.expText.x =  this.state.faune.body.position.x - 285
+        this.state.expText.y =  this.state.faune.body.position.y - 75
+        this.state.moneyText.x =  this.state.faune.body.position.x - 285
+        this.state.moneyText.y =  this.state.faune.body.position.y - 60
+        this.state.difficultyText.x =  this.state.faune.body.position.x - 285
+        this.state.difficultyText.y =  this.state.faune.body.position.y - 45
         
         if(this.state.statusBattleText) {
             this.state.statusBattleText.x = this.state.faune.body.position.x - 27

@@ -3,6 +3,7 @@ import  { useHistory } from 'react-router-dom'
 import { Container, Table, Button } from 'react-bootstrap'
 import axios from 'axios'
 import LeaderboardRow from '../component/leaderboard-tablerow'
+import LoadingDisplay from '../component/LoadingDisplay.js';
 function LeaderboardScene () {
 
   const [users , setUsers] = useState([])
@@ -30,22 +31,21 @@ function LeaderboardScene () {
   }
 
   return (
-    <div id="leaderboard-page" className="f-dogicabold">
+    <div id="leaderboard-page" className="f-dogicabold bg-black">
       {
         loading &&
-        <h1>
-          Loading
-        </h1>
+        <LoadingDisplay/>
       }
       {
         !loading && users &&
-      <Container>
+      <Container fluid>
         <h1 style={{textAlign: 'center'}}>Leaderboard</h1>
-        <Button variant="danger" onClick={BackToGame} style={{marginLeft: '80%'}}>Exit</Button>
-        <Table  borderless>
+        <Button variant="danger" onClick={BackToGame} style={{float:'right', marginBottom: '20px'}}>Exit</Button>
+        <Table  borderless variant="dark" style={{width: '80%', clear:'both', margin: '0 auto'}} striped >
           <thead>
             <tr>
               <th>Rank</th>
+              <th>Username</th>
               <th>Point</th>
             </tr>
           </thead>
@@ -58,7 +58,6 @@ function LeaderboardScene () {
           </tbody>
         </Table>
       </Container>
-
       }
     </div>
   )

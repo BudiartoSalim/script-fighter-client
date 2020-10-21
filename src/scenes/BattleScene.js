@@ -25,7 +25,7 @@ function BattleScene () {
   const time = 20
   const [countdown, setCountDown] = useState(time)
   const [submittedAnswer, setSubmittedAnswer] = useState('')
-  const [ intervalRunning, setIntervalRunning] = useState(true)
+  const [intervalRunning, setIntervalRunning] = useState(true)
   const history = useHistory()
 
   useEffect(() => {
@@ -68,10 +68,7 @@ function BattleScene () {
 
   useEffect(() => {
     
-    let idx = idxQuestion
-    if(idxQuestion >= question.length){
-      idx = Math.floor(Math.random() * question.length)
-    }
+    let idx = Math.floor(Math.random() * question.length)
 
     setQuestionNow({
       ...question[idx]
@@ -169,8 +166,7 @@ function BattleScene () {
   }
   
   return (
-
-    <Container style={{fontFamily: 'dogicabold'}} className="mt-3">
+    <Container fluid style={{fontFamily: 'dogicabold'}} className="mt-3">
         <Row>
           <div id="battle-scene-left" className="border border-dark col-sm-3">
           <Image
@@ -198,7 +194,7 @@ function BattleScene () {
           <div id="battle-scene-center" className="border border-dark col-sm-6 p-3">
             <div id="time-box">
               <h5>Time</h5>
-              <ProgressBar variant="success" now={countdown / time * 100}/>
+              <ProgressBar variant="primary" now={countdown / time * 100}/>
             </div>
             {
               question && 
@@ -254,7 +250,7 @@ function BattleScene () {
           </h5>
           <div style={{fontFamily: 'dogica'}}>
           <p>{username.toUpperCase()}</p>
-          <ProgressBar variant="danger" now={ hpCharacter / characterStatus.hp * 100} label="HP" style={{transition: 'none !important'}}/>
+          <ProgressBar variant="success" now={ hpCharacter / characterStatus.hp * 100} label="HP" style={{transition: 'none !important'}}/>
           <p>Atk: {characterStatus.atk} </p>
           <p>Def: {characterStatus.def}</p>
           </div>
