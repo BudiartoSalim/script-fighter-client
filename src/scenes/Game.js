@@ -173,7 +173,7 @@ export default class Game extends Phaser.Scene
         
         // let scroll = this.add.image(10,10, 'scroll')
         this.state.board = this.add.image(10,70, 'board')
-        this.state.board.alpha = 0.7
+        this.state.board.alpha = 0.5
         // Add Text for level
         let diff
         switch (this.state.userStatus.difficulty) {
@@ -320,8 +320,8 @@ export default class Game extends Phaser.Scene
     update ()   
     {   
         // Updating Text position when player move
-        this.state.board.x = this.state.faune.body.position.x - 240
-        this.state.board.y = this.state.faune.body.position.y - 100
+        this.state.board.x = this.state.faune.body.position.x - 235
+        this.state.board.y = this.state.faune.body.position.y - 95
         this.state.levelText.x =  this.state.faune.body.position.x - 285
         this.state.levelText.y =  this.state.faune.body.position.y - 135
         this.state.hpText.x =  this.state.faune.body.position.x - 285

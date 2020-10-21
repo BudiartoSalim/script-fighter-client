@@ -22,13 +22,15 @@ function BattleScene () {
   const [hpCharacter, setHpCharacter] = useState(0)
   const [characterStatus , setCharacterStatus] = useState({})
   const [username, setUsername] = useState('')
-  const time = 20
+  const time = 3
   const [countdown, setCountDown] = useState(time)
   const [submittedAnswer, setSubmittedAnswer] = useState('')
   const [intervalRunning, setIntervalRunning] = useState(true)
   const [combatResult , setCombatResult] = useState('')
   const history = useHistory()
-  
+
+
+  //starting use effect set character , question , monster, username
   useEffect(() => {
 
     setCharacterStatus(JSON.parse(localStorage.getItem('userStatus')))
@@ -38,10 +40,11 @@ function BattleScene () {
 
   }, [])
 
+  //checking interval
   useEffect(() => {
     let interval
-    let timeout  
-
+    let timeout
+   
     if(intervalRunning && countdown === time) {
       timeout = setTimeout(() => {
         interval = setInterval(() => {   
@@ -51,7 +54,6 @@ function BattleScene () {
     } else {
       clearInterval(interval)
       resetCountdown()
-
     }
 
     return () => {
@@ -62,11 +64,13 @@ function BattleScene () {
 
   }, [intervalRunning])
 
+  //set hp character & monster when battling
   useEffect(() => {
     setHpMonster(monster.hp)
     setHpCharacter(characterStatus.hp)
   }, [monster, characterStatus])
 
+  //random question
   useEffect(() => {
     let idx = Math.floor(Math.random() * question.length)
 
@@ -74,23 +78,9 @@ function BattleScene () {
       ...question[idx]
     })
 
-    if(hpMonster > 0 || hpCharacter > 0) {
-
-      if(question[idx]){
-        
-        let filtered = questionAnswer.filter(quest => quest.id === question[idx].id)
-
-        if(filtered.length === 0){
-          setQuestionAnswer([...questionAnswer, question[idx]])
-        }
-
-      }
-      
-    }
-
   }, [question, idxQuestion])
 
-
+  //check hp monster
   useEffect(() => {
     if(hpMonster && hpMonster <= 0) {
 
@@ -117,6 +107,7 @@ function BattleScene () {
     }
   }, [hpMonster])
 
+  //check hp character
   useEffect(() => {
     
     if(hpCharacter && hpCharacter <= 0) {
@@ -127,9 +118,18 @@ function BattleScene () {
 
   }, [hpCharacter])
 
+  //check countdown
   useEffect(() => {
     
     if(countdown <= -0.5) {
+      
+      if(hpMonster > 0 && hpCharacter > 0) {
+        let filter = questionAnswer.filter(el => el.id === questionNow.id)
+        if(filter.length === 0 ){
+          setQuestionAnswer([...questionAnswer, questionNow])
+        }
+      }
+
         setIdxQuestion(idxQuestion + 1)
         setHpCharacter(hpCharacter - 30)
         resetCountdown()
@@ -137,21 +137,30 @@ function BattleScene () {
 
   }, [countdown])
 
+  //reset coundown back to max time
   function resetCountdown () {
     setCountDown(time)
     setIntervalRunning(!intervalRunning)
   }
 
+  //change answer question
   function changeAnswer(e) {
     setSubmittedAnswer(e.target.value)
   }
 
+  //back to game
   function ranAway() {
     localStorage.setItem('statusbattle' , 'lose')
     history.push('game')
   }
 
+  //submit answer
   function clickAnswer (e) {
+
+      let filter = questionAnswer.filter(el => el.id === questionNow.id)
+      if(filter.length === 0 ){
+        setQuestionAnswer([...questionAnswer, questionNow])
+      }
 
       axios({
         method: 'POST',
