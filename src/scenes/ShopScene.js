@@ -19,6 +19,10 @@ export default function ShopScene() {
   const shopSound = new Audio(ShopSound)
   //adding audio
   useEffect(() => {
+    let access_token = localStorage.getItem('access_token')
+    if(!access_token) {
+      history.push('/')
+    }
     shopSound.play()
 
     return () => {
