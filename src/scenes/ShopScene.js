@@ -14,7 +14,7 @@ export default function ShopScene() {
   const [purchaseStatus, setPurchaseStatus] = useState('')
   const [buyCount, setBuyCount] = useState(0)
   const history = useHistory()
-
+  
   //on page load, fetch item list based on current player stats
   useEffect(() => {
     setUserStatus(JSON.parse(localStorage.getItem('userStatus')))
