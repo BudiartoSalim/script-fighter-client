@@ -68,19 +68,19 @@ export default function ShopScene() {
 
   return (
     <>
-      <Container fluid className="f-dogicabold bg-black">
-        <Row style={{alignContent: 'center'}}>
-          <div style={{ width: '100%', textAlign: 'center'}}>
+      <Container className="f-dogicabold bg-black">
+        <Row style={{alignContent: 'center', textAlign: 'center'}}>
+          <div style={{ width: '100%'}}>
             <h1>
               Shop
             </h1> 
-            <Button onClick={BackToGame} variant={'danger'} style={{float: 'right'}}>Exit</Button>
           </div>
-          <div>
-            {
-              userStatus && 
+          <div className="upper-body-shopScene">
+              {
+                userStatus && 
                 <h4>$ : {userStatus.money}</h4>
               }
+              <Button onClick={BackToGame} variant={'danger'} >Exit</Button>
           </div>
           <div style={{height:'40px', width: '100%', textAlign:'center'}}>
               {

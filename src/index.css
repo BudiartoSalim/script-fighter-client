@@ -55,6 +55,12 @@ body {
   background-color: burlywood;
 }
 
+.card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 #battle-scene-center {
   display: flex;
   flex-direction: column;
@@ -66,6 +72,13 @@ body {
   flex-direction: column;
   height: 100%;
 
+}
+
+.upper-body-shopScene {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
 }
 
 #battle-scene-buttons {

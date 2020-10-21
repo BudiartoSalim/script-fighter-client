@@ -38,7 +38,7 @@ export default function ShopContent(props) {
 
   return (
     <>
-      <Card bg="dark" style={{ marginBottom: '10px'}}>
+      <Card bg="dark" style={{ marginBottom: '10px', height: 350}}>
         <Card.Body>
           <Card.Title>
             {props.item.item_name}
