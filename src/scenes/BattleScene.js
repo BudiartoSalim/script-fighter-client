@@ -271,7 +271,7 @@ function BattleScene () {
           className="border border-dark"
           style={{
             width:"200px",
-            marginLeft: "30px",
+            marginLeft: "55px",
             marginTop: "25px",
             marginBottom: "25px"
           }}

@@ -406,7 +406,7 @@ export default class Game extends Phaser.Scene
             }, 1000)
         }
         let run = 150
-        let walk = 100
+        let walk = 50
 
         if (this.state.cursors.left.isDown && this.state.cursors.run.isDown ) {
             this.state.faune.setVelocityX(-run);
