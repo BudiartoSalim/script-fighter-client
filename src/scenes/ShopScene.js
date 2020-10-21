@@ -37,7 +37,7 @@ export default function ShopScene() {
     setErrorStatus(false);
     ScriptFighterAPI({
       method: 'GET',
-      url: `http://localhost:3000/shop`,
+      url: `/shop`,
       headers: {
         access_token: localStorage.getItem('access_token')
       }

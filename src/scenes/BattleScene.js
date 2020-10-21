@@ -96,7 +96,7 @@ function BattleScene () {
 
       ScriptFighterAPI({
         method: 'PUT',
-        url: 'http://localhost:3000/combat/experience',
+        url: '/combat/experience',
         headers: {
           access_token: localStorage.getItem('access_token')
         },
@@ -127,7 +127,7 @@ function BattleScene () {
 
   //check countdown
   useEffect(() => {
-    
+
     if(countdown <= -0.5) {      
       if(hpMonster > 0 && hpCharacter > 0) {
         let filter = questionAnswer.filter(el => el.id === questionNow.id)
@@ -171,7 +171,7 @@ function BattleScene () {
 
       ScriptFighterAPI({
         method: 'POST',
-        url: `http://localhost:3000/combat/question/${questionNow.id}`,
+        url: `/combat/question/${questionNow.id}`,
         headers: {
           access_token : localStorage.getItem('access_token')
         },
