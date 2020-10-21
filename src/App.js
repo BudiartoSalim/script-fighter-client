@@ -9,8 +9,6 @@ import ShopScene from './scenes/ShopScene'
 import Register from './component/Register'
 function App () {
 
-  const history = useHistory()
-
   return (
     <div>
     <Router>
