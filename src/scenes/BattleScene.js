@@ -10,7 +10,7 @@ import {
 } from 'react-bootstrap'
 import axios from 'axios'
 import CombatResult from '../component/CombatResult'
-
+import BattleSound from '../assets/audio/battle.mp3'
 function BattleScene () {
 
   const [question, setQuestion] = useState([])
@@ -29,15 +29,18 @@ function BattleScene () {
   const [combatResult , setCombatResult] = useState('')
   const history = useHistory()
 
-
+  const battleSound = new Audio(BattleSound)
   //starting use effect set character , question , monster, username
   useEffect(() => {
-
+    battleSound.play()
     setCharacterStatus(JSON.parse(localStorage.getItem('userStatus')))
     setQuestion(JSON.parse(localStorage.getItem('question')))
     setMonster(JSON.parse(localStorage.getItem('monster-now')))
     setUsername(localStorage.getItem('username'))
 
+    return () => {
+      battleSound.pause()
+    }
   }, [])
 
   //checking interval
@@ -57,7 +60,6 @@ function BattleScene () {
     }
 
     return () => {
-      console.log('cleanup')
       clearTimeout(timeout)
       clearInterval(interval)
     }
@@ -83,7 +85,7 @@ function BattleScene () {
   //check hp monster
   useEffect(() => {
     if(hpMonster && hpMonster <= 0) {
-
+      setHpMonster(0)
       localStorage.setItem('statusbattle' , 'win')
 
       axios({
@@ -109,7 +111,6 @@ function BattleScene () {
 
   //check hp character
   useEffect(() => {
-    
     if(hpCharacter && hpCharacter <= 0) {
       setHpCharacter(0)
       localStorage.setItem('statusbattle' , 'lose')
@@ -131,8 +132,9 @@ function BattleScene () {
       }
 
         setIdxQuestion(idxQuestion + 1)
-        setHpCharacter(hpCharacter - 30)
+        setHpCharacter(hpCharacter - ((monster.atk * 2) / characterStatus.def))
         resetCountdown()
+
     }
 
   }, [countdown])
@@ -178,7 +180,7 @@ function BattleScene () {
           if(data.answerResult) {
             setHpMonster(hpMonster - Math.ceil((characterStatus.atk * 2) / monster.def))
           } else {
-            setHpCharacter(hpCharacter - Math.ceil((monster.atk * 2) / monster.atk))
+            setHpCharacter(hpCharacter - Math.ceil((monster.atk * 2) / characterStatus.def))
           }
 
             resetCountdown()
