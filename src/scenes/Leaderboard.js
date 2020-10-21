@@ -5,6 +5,7 @@ import axios from 'axios'
 import LeaderboardRow from '../component/leaderboard-tablerow'
 import LoadingDisplay from '../component/LoadingDisplay.js';
 import leaderboardSound from '../assets/audio/leaderboard.mp3'
+import ScriptFighterAPI from '../API/ScriptFighterAPI'
 
 function LeaderboardScene () {
 
@@ -34,9 +35,9 @@ function LeaderboardScene () {
   useEffect( () => {
     playAudio()
     setLoading(true)
-    axios({
+    ScriptFighterAPI({
       method: 'GET',
-      url: 'http://localhost:3000/rank'
+      url: '/rank'
     })
     .then(({data}) => {
       setLoading(false)
