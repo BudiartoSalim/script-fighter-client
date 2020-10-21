@@ -262,20 +262,21 @@ export default class Game extends Phaser.Scene
     update ()   
     {   
         // Updating Text position when player move
-        this.state.board.x = this.state.faune.body.position.x - 260
+        this.state.board.x = this.state.faune.body.position.x - 320
         this.state.board.y = this.state.faune.body.position.y - 220
-        this.state.levelText.x =  this.state.faune.body.position.x - 380
+        this.state.levelText.x =  this.state.faune.body.position.x - 440
         this.state.levelText.y =  this.state.faune.body.position.y - 280
-        this.state.hpText.x =  this.state.faune.body.position.x - 380
+        this.state.hpText.x =  this.state.faune.body.position.x - 440
         this.state.hpText.y =  this.state.faune.body.position.y - 260
-        this.state.atkText.x =  this.state.faune.body.position.x - 380
+        this.state.atkText.x =  this.state.faune.body.position.x - 440
         this.state.atkText.y =  this.state.faune.body.position.y - 240
-        this.state.defText.x =  this.state.faune.body.position.x - 380
+        this.state.defText.x =  this.state.faune.body.position.x - 440
         this.state.defText.y =  this.state.faune.body.position.y - 220
-        this.state.expText.x =  this.state.faune.body.position.x - 380
+        this.state.expText.x =  this.state.faune.body.position.x - 440
         this.state.expText.y =  this.state.faune.body.position.y - 200
-        this.state.moneyText.x =  this.state.faune.body.position.x - 380
+        this.state.moneyText.x =  this.state.faune.body.position.x - 440
         this.state.moneyText.y =  this.state.faune.body.position.y - 180
+        
         if(this.state.statusBattleText) {
             this.state.statusBattleText.x = this.state.faune.body.position.x - 27
             this.state.statusBattleText.y = this.state.faune.body.position.y - 30
