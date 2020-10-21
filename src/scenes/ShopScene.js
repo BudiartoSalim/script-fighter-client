@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col , Button, Form} from 'react-bootstrap';
+import {useHistory} from 'react-router-dom'
 import axios from 'axios';
 import ShopContent from '../component/ShopContent';
 
 export default function ShopScene() {
+  
   const [shopContents, setShopContents] = useState([]);
   const [loadingStatus, setLoadingStatus] = useState(true);
   const [errorStatus, setErrorStatus] = useState(false);
+  const [userStatus, setUserStatus] = useState({})
+  const [purchaseStatus, setPurchaseStatus] = useState('')
+  const [buyCount, setBuyCount] = useState(0)
+  const history = useHistory()
 
   //on page load, fetch item list based on current player stats
   useEffect(() => {
+    setUserStatus(JSON.parse(localStorage.getItem('userStatus')))
     setLoadingStatus(true);
     setErrorStatus(false);
     axios({
@@ -20,22 +27,54 @@ export default function ShopScene() {
       }
     }
     ).then(({ data }) => {
+      console.log(data)
       setShopContents(data);
       setLoadingStatus(false);
       setErrorStatus(false);
     }).catch((err) => {
-      setErrorStatus(err.response);
+      setErrorStatus(err.response.data.message);
       setLoadingStatus(false);
     })
 
-  }, [])
+  }, [buyCount])
+
+  useEffect(() => {
+
+    let timeout = setTimeout(() => {
+      setPurchaseStatus(false)
+    }, 2000)
+
+  }, [purchaseStatus])
+
+  function BackToGame() {
+    history.push('/game')
+  }
 
   return (
     <>
-      <Container style={{ marginTop: '5%'}}>
+      <Container style={{ marginTop: '5%'}} className="f-dogicabold">
         <Row style={{alignContent: 'center'}}>
           <div style={{ width: '100%', textAlign: 'center'}}>
-            <h1>Shop</h1>
+            <h1>
+              Shop
+            </h1> 
+            <Button onClick={BackToGame} variant={'danger'} style={{marginLeft: '85%'}}>Exit</Button>
+          </div>
+          <div>
+            {
+              userStatus && 
+                <h4>$ : {userStatus.money}</h4>
+              }
+          </div>
+          <div style={{height:'40px', width: '100%', textAlign:'center'}}>
+              {
+                (purchaseStatus === 'success') &&
+                <h3 style={{color:'green'}}>Successful Buying Item</h3>
+              }
+              {
+                (purchaseStatus && purchaseStatus != 'success') &&
+                <h3 style={{color:'red'}}>{purchaseStatus}</h3>
+              }
           </div>
         </Row>
         <Row >
@@ -56,7 +95,7 @@ export default function ShopScene() {
             shopContents.map((content) => {
               return (
                 <Col sm={4} md={4} lg={4} xl={4} key={content.id}> 
-                  <ShopContent  item={content} />
+                  <ShopContent  item={content}  userStat={userStatus} setStatUser={setUserStatus} setPurchaseStatus={setPurchaseStatus} buyCount={buyCount} setBuyCount={setBuyCount}/>
                 </Col>
               )
             })

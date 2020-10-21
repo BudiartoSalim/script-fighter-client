@@ -3,7 +3,13 @@ import { Container, Row, Col, Table, ProgressBar, Button, Card } from 'react-boo
 import axios from 'axios';
 
 export default function ShopContent(props) {
-  const [error, setError] = useState('');
+  const [userStatus, setUserStatus] = useState({})
+
+  useEffect(() => {
+
+    setUserStatus(JSON.parse(localStorage.getItem('userStatus')))
+
+  }, [])
 
   async function buyItem() {
     try {
@@ -14,24 +20,21 @@ export default function ShopContent(props) {
           access_token: localStorage.getItem('access_token')
         }
       })
-
+      
       if (data.userStatus) {
+        console.log(data.userStatus)
+        props.setPurchaseStatus('success')
         localStorage.setItem('userStatus', JSON.stringify(data.userStatus));
+        props.setStatUser(data.userStatus)
+        setUserStatus(data.userStatus)
+        props.setBuyCount(props.buyCount + 1)
       } else {
-        setError(data.message);
+        props.setPurchaseStatus(data.message)
       }
     } catch (err) {
-      setError(err.response.data.message);
+      props.setPurchaseStatus(err.response.data.message)
     }
   }
-
-  useEffect(() => {
-    
-    setTimeout(() => {
-      setError('')
-    }, 2000)
-
-  }, [error])
 
   return (
     <>
@@ -39,12 +42,6 @@ export default function ShopContent(props) {
         <Card.Body>
           <Card.Title>
             {props.item.item_name}
-            <div style={{height: "30px"}}>
-            {
-              error &&
-              <h3 style={{fontSize: '24px', color: 'red'}}>{error}</h3>
-            }
-            </div>
           </Card.Title>
           <Card.Text>
             {props.item.description}
@@ -52,12 +49,12 @@ export default function ShopContent(props) {
           <Row>
             <Col sm={5} md={5} lg={5} xl={5}>
               <Card.Text>
-                Price:
+                Price
               </Card.Text>
             </Col>
             <Col sm={7} md={7} lg={7} xl={7}>
               <Card.Text>
-                {props.item.price}
+                :{props.item.price}
               </Card.Text>
             </Col>
             {
@@ -65,12 +62,12 @@ export default function ShopContent(props) {
                 <>
                   <Col sm={5} md={5} lg={5} xl={5}>
                     <Card.Text>
-                      Hp:
+                      Hp
                   </Card.Text>
                   </Col>
                   <Col sm={7} md={7} lg={7} xl={7}>
                     <Card.Text>
-                      +{props.item.hp}
+                      :+{props.item.hp}
                     </Card.Text>
                   </Col>
                 </>
@@ -81,12 +78,12 @@ export default function ShopContent(props) {
                 <>
                   <Col sm={5} md={5} lg={5} xl={5}>
                     <Card.Text>
-                      Atk:
+                      Atk
                   </Card.Text>
                   </Col>
                   <Col sm={7} md={7} lg={7} xl={7}>
                     <Card.Text>
-                      +{props.item.atk}
+                      :+{props.item.atk}
                     </Card.Text>
                   </Col>
                 </>
@@ -97,19 +94,19 @@ export default function ShopContent(props) {
                 <>
                   <Col sm={5} md={5} lg={5} xl={5}>
                     <Card.Text>
-                      Def:
+                      Def
                   </Card.Text>
                   </Col>
                   <Col sm={7} md={7} lg={7} xl={7}>
                     <Card.Text>
-                      +{props.item.def}
+                      :+{props.item.def}
                     </Card.Text>
                   </Col>
                 </>
               )
             }
             {
-              props.item.difficulty > 0 && (
+              props.item.difficulty > userStatus.maxDifficulty && (
                 <>
                   <Col>
                     <Card.Text>

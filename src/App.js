@@ -16,9 +16,7 @@ function App () {
           <Login/>
         </Route>
         <Route exact path="/game">
-          <div style={{margin: '0 auto'}}>
             <GameScreen/>
-          </div>
         </Route>
         <Route exact path="/battle">
           <BattleScene/>

@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import Phaser from 'phaser'
 import { IonPhaser } from '@ion-phaser/react'
 import Game from '../scenes/Game' 
+import { Container } from 'react-bootstrap'
 
 function GameScreen() {
 
@@ -27,7 +28,11 @@ function GameScreen() {
   const { initialize, game } = state
 
   return (
-      <IonPhaser game={game} initialize={initialize}  />
+    <div style={{backgroundColor: 'black', height: '100vh'}}>
+      <Container>
+        <IonPhaser game={game} initialize={initialize}  />
+      </Container>
+    </div>
   )
 }
 
