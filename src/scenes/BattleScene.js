@@ -6,16 +6,16 @@ import {
   ProgressBar,
   Button,
   Image,
-  Form,
-  InputGroup,
-  FormControl
+  Form
 } from 'react-bootstrap'
 import axios from 'axios'
+import CombatResult from '../component/CombatResult'
 
 function BattleScene () {
 
   const [question, setQuestion] = useState([])
   const [questionNow , setQuestionNow] = useState({})
+  const [questionAnswer, setQuestionAnswer] = useState([])
   const [idxQuestion, setIdxQuestion] = useState(0)
   const [monster, setMonster] = useState({ })
   const [hpMonster, setHpMonster] = useState(0)
@@ -26,8 +26,9 @@ function BattleScene () {
   const [countdown, setCountDown] = useState(time)
   const [submittedAnswer, setSubmittedAnswer] = useState('')
   const [intervalRunning, setIntervalRunning] = useState(true)
+  const [combatResult , setCombatResult] = useState('')
   const history = useHistory()
-
+  
   useEffect(() => {
 
     setCharacterStatus(JSON.parse(localStorage.getItem('userStatus')))
@@ -67,14 +68,28 @@ function BattleScene () {
   }, [monster, characterStatus])
 
   useEffect(() => {
-    
     let idx = Math.floor(Math.random() * question.length)
 
     setQuestionNow({
       ...question[idx]
     })
 
+    if(hpMonster > 0 || hpCharacter > 0) {
+
+      if(question[idx]){
+        
+        let filtered = questionAnswer.filter(quest => quest.id === question[idx].id)
+
+        if(filtered.length === 0){
+          setQuestionAnswer([...questionAnswer, question[idx]])
+        }
+
+      }
+      
+    }
+
   }, [question, idxQuestion])
+
 
   useEffect(() => {
     if(hpMonster && hpMonster <= 0) {
@@ -94,7 +109,7 @@ function BattleScene () {
       })
       .then(({data}) => {
         localStorage.setItem('userStatus', JSON.stringify(data.status))
-        history.push('/game')
+        setCombatResult('Win!')
       })
       .catch(err => {
         console.log(err)
@@ -107,7 +122,7 @@ function BattleScene () {
     if(hpCharacter && hpCharacter <= 0) {
       setHpCharacter(0)
       localStorage.setItem('statusbattle' , 'lose')
-      history.push('/game')
+      setCombatResult('Lose!')
     }
 
   }, [hpCharacter])
@@ -166,7 +181,14 @@ function BattleScene () {
   }
   
   return (
-    <Container fluid style={{fontFamily: 'dogicabold'}} className="mt-3">
+    <>
+    {
+      combatResult && 
+      <CombatResult combatResult={combatResult} questions={questionAnswer}></CombatResult>
+    }
+    {
+      !combatResult &&
+        <Container fluid style={{fontFamily: 'dogicabold'}} className="mt-3">
         <Row>
           <div id="battle-scene-left" className="border border-dark col-sm-3">
           <Image
@@ -256,7 +278,10 @@ function BattleScene () {
           </div>
           </div>
         </Row>
-    </Container>
+      </Container>
+    }
+     
+    </>
   )
 }
 
