@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Row, Col , Button, Form} from 'react-bootstrap';
 import {useHistory} from 'react-router-dom'
-import axios from 'axios';
 import ShopContent from '../component/ShopContent';
 import LoadingDisplay from '../component/LoadingDisplay.js';
 import ShopSound from '../assets/audio/shop.mp3'
+import ScriptFighterAPI from '../API/ScriptFighterAPI'
 
 export default function ShopScene() {
   
@@ -35,7 +35,7 @@ export default function ShopScene() {
     setUserStatus(JSON.parse(localStorage.getItem('userStatus')))
     setLoadingStatus(true);
     setErrorStatus(false);
-    axios({
+    ScriptFighterAPI({
       method: 'GET',
       url: `http://localhost:3000/shop`,
       headers: {

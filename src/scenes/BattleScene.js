@@ -8,9 +8,10 @@ import {
   Image,
   Form
 } from 'react-bootstrap'
-import axios from 'axios'
 import CombatResult from '../component/CombatResult'
 import BattleSound from '../assets/audio/battle.mp3'
+import ScriptFighterAPI from '../API/ScriptFighterAPI'
+
 function BattleScene () {
 
   const [question, setQuestion] = useState([])
@@ -37,7 +38,7 @@ function BattleScene () {
       history.push('/')
     }
     battleSound.play()
-    battleSound.volume = 0.1
+    battleSound.volume = 0.5
     setCharacterStatus(JSON.parse(localStorage.getItem('userStatus')))
     setQuestion(JSON.parse(localStorage.getItem('question')))
     setMonster(JSON.parse(localStorage.getItem('monster-now')))
@@ -93,7 +94,7 @@ function BattleScene () {
       setHpMonster(0)
       localStorage.setItem('statusbattle' , 'win')
 
-      axios({
+      ScriptFighterAPI({
         method: 'PUT',
         url: 'http://localhost:3000/combat/experience',
         headers: {
@@ -169,7 +170,7 @@ function BattleScene () {
         setQuestionAnswer([...questionAnswer, questionNow])
       }
 
-      axios({
+      ScriptFighterAPI({
         method: 'POST',
         url: `http://localhost:3000/combat/question/${questionNow.id}`,
         headers: {

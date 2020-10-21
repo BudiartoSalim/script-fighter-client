@@ -1,11 +1,10 @@
 import React,{ useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom'
-import axios from 'axios'
-import { InputGroup,
-  FormControl,
+import {
   Form,
   Button,
   Alert } from 'react-bootstrap'
+import ScriptFighterAPI from '../API/ScriptFighterAPI'
 
 function Register() {
   const [registerForm, setRegisterForm] = useState({
@@ -30,9 +29,9 @@ function Register() {
   }
   function submitRegister(event) {
     event.preventDefault()
-    axios({
+    ScriptFighterAPI({
       method: 'POST',
-      url: 'http://localhost:3000/register',
+      url: '/register',
       data: {
         email: registerForm.email,
         username: registerForm.username,
@@ -41,16 +40,22 @@ function Register() {
     })
     .then(({ data }) => {
       history.push('/')
+      localStorage.setItem('login', 'Success Register!!!')
     })
     .catch(err => {
       setErrForm(err.response.data.message)
     })
   }
 
+  function BackToLogin() {
+    history.push('/')
+    
+  }
+
   return (
     <>
     <div id="background">
-      <div className="login-box p-3">
+      <div className="register-box p-3">
             <div className="title center mt-60">
                 <h1 className="badge-light">Script Fighter
                 <h3 className="badge-warning">Register</h3>
@@ -89,6 +94,9 @@ function Register() {
               </Form.Group>
               <Button variant="secondary" type="submit">
                 Register
+              </Button>
+              <Button variant="secondary" style={{marginTop: '10px'}} onClick={BackToLogin} >
+                Back To Login
               </Button>
             </Form>
         </div>
